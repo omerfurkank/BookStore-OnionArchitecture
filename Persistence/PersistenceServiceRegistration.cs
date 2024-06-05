@@ -1,0 +1,27 @@
+﻿using Application.Repositories;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Persistence.Contexts;
+using Persistence.Repositories;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection.Metadata.Ecma335;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Persistence;
+public static class PersistenceServiceRegistration
+{
+    public static IServiceCollection AddPersistenceServices(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddDbContext<BookDbContext>(options =>options.UseNpgsql(configuration.GetConnectionString("BookConnectionString")));
+
+        services.AddScoped<IAuthorRepository, AuthorRepository>();
+        services.AddScoped<IBookRepository, BookRepository>();
+
+        return services;
+    }
+    
+}
