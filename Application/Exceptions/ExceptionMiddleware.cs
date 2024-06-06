@@ -25,8 +25,8 @@ public class ExceptionMiddleware : IMiddleware
     private static Task HandleExceptionAsync(HttpContext httpContext, Exception exception)
     {
         int statusCode = GetStatusCode(exception);
-        httpContext.Response.ContentType = "application/json";
         httpContext.Response.StatusCode = statusCode;
+        httpContext.Response.ContentType = "application/json";
 
         if (exception.GetType() == typeof(ValidationException))
             return httpContext.Response.WriteAsync(new ExceptionModel

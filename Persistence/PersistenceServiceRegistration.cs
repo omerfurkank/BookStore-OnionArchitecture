@@ -1,4 +1,5 @@
 ﻿using Application.Repositories;
+using Domain.Entities.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,6 +18,7 @@ public static class PersistenceServiceRegistration
     public static IServiceCollection AddPersistenceServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddDbContext<BookDbContext>(options =>options.UseNpgsql(configuration.GetConnectionString("BookConnectionString")));
+        services.AddIdentityCore<User>().AddRoles<Role>().AddEntityFrameworkStores<BookDbContext>();
 
         services.AddScoped<IAuthorRepository, AuthorRepository>();
         services.AddScoped<IBookRepository, BookRepository>();

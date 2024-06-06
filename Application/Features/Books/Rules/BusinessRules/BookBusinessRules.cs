@@ -1,4 +1,6 @@
-﻿using Application.Repositories;
+﻿using Application.Exceptions.CustomExceptions;
+using Application.Features.Books.Constants;
+using Application.Repositories;
 using Domain.Entities;
 
 namespace Application.Features.Books.Rules.BusinessRules;
@@ -16,7 +18,7 @@ public class BookBusinessRules
 
         if (result is not null)
         {
-            throw new Exception("BrandsMessages.BrandNameExists");
+            throw new BusinessException(BookMessages.BookNameExists);
         }
     }
 }

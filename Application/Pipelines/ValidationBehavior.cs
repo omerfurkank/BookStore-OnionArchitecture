@@ -10,26 +10,26 @@ namespace Application.Pipelines;
 public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
         where TRequest : IRequest<TResponse>
 {
-    private readonly IEnumerable<IValidator<TRequest>> validators;
+    private readonly IEnumerable<IValidator<TRequest>> _validators;
 
-    public ValidationBehavior(IEnumerable<IValidator<TRequest>> validator)
+    public ValidationBehavior(IEnumerable<IValidator<TRequest>> validators)
     {
-        validators = validator;
+        _validators = validators;
     }
-    public Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
+    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
         var context = new ValidationContext<TRequest>(request);
-        var failtures = validators
+        var failtures = _validators
             .Select(v => v.Validate(context))
             .SelectMany(result => result.Errors)
             .GroupBy(x => x.ErrorMessage)
             .Select(x => x.First())
-            .Where(f => f != null)
+            .Where(f => f is not null)
             .ToList();
 
         if (failtures.Any())
             throw new ValidationException(failtures);
 
-        return next();
+        return await next();
     }
 }

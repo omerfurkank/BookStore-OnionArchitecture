@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Books.Queries.GetListBook;
 
-public class GetListBookQueryHandler : IRequestHandler<GetListBookQueryRequest, IList<GetByIdBookQueryResponse>>
+public class GetListBookQueryHandler : IRequestHandler<GetListBookQueryRequest, IList<GetListBookQueryResponse>>
 {
     private readonly IBookRepository _bookRepository;
     private readonly IMapper _mapper;
@@ -17,10 +17,10 @@ public class GetListBookQueryHandler : IRequestHandler<GetListBookQueryRequest, 
         _mapper = mapper;
     }
 
-    public async Task<IList<GetByIdBookQueryResponse>> Handle(GetListBookQueryRequest request, CancellationToken cancellationToken)
+    public async Task<IList<GetListBookQueryResponse>> Handle(GetListBookQueryRequest request, CancellationToken cancellationToken)
     {
         var books = await _bookRepository.GetListAsync(include: b => b.Include(b => b.Author), index: request.Index, size: request.Size);
-        IList<GetByIdBookQueryResponse> response = _mapper.Map<IList<GetByIdBookQueryResponse>>(books);
+        IList<GetListBookQueryResponse> response = _mapper.Map<IList<GetListBookQueryResponse>>(books);
         throw new Exception("dsf");//return response;
     }
 }

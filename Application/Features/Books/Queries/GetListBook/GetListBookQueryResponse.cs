@@ -5,5 +5,7 @@ namespace Application.Features.Books.Queries.GetListBook;
 
 public class GetListBookQueryResponse
 {
-    public IList<GetByIdBookQueryResponse> Books { get; set; }
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public string AuthorName { get; set; }
 }

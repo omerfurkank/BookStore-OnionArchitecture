@@ -23,7 +23,7 @@ public class BooksController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetList([FromQuery] GetListBookQueryRequest request)
     {
-        IList<GetByIdBookQueryResponse> result = await _mediator.Send(request);
+        IList<GetListBookQueryResponse> result = await _mediator.Send(request);
         return Ok(result);
     }
     [HttpGet("{Id}")]
@@ -41,6 +41,7 @@ public class BooksController : ControllerBase
     [HttpPut]
     public async Task<IActionResult> Update([FromBody] UpdateBookCommandRequest command)
     {
+
         UpdateBookCommandResponse result = await _mediator.Send(command);
         return Ok(result);
     }
