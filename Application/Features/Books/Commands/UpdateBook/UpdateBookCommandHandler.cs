@@ -22,8 +22,9 @@ public class UpdateBookCommandHandler : IRequestHandler<UpdateBookCommandRequest
 
     public async Task<UpdateBookCommandResponse> Handle(UpdateBookCommandRequest request, CancellationToken cancellationToken)
     {
-        Book mappedBook = _mapper.Map<Book>(request);
-        Book updatedBook = await _bookRepository.UpdateAsync(mappedBook);
+        Book? book = await _bookRepository.GetAsync(predicate: b => b.Id == request.Id);
+        book = _mapper.Map(request, book);
+        Book updatedBook = await _bookRepository.UpdateAsync(book);
         var response = _mapper.Map<UpdateBookCommandResponse>(updatedBook);
         return response;
     }

@@ -26,19 +26,19 @@ public class TokenService : ITokenService
     {
         List<Claim> claims = new()
             {
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim(JwtRegisteredClaimNames.Email, user.Email)
+                new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new(JwtRegisteredClaimNames.Email, user.Email)
             };
 
         foreach (var role in roles)
         {
-            claims.Add(new Claim(ClaimTypes.Role, role));
+            claims.Add(new(ClaimTypes.Role, role));
         }
 
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_tokenSettings.Secret));
+        SymmetricSecurityKey key = new(Encoding.UTF8.GetBytes(_tokenSettings.Secret));
 
-        var token = new JwtSecurityToken(
+        JwtSecurityToken token = new(
             issuer: _tokenSettings.Issuer,
             audience: _tokenSettings.Audience,
             expires: DateTime.Now.AddMinutes(_tokenSettings.TokenValidityInMunitues),
@@ -67,7 +67,7 @@ public class TokenService : ITokenService
             ValidateIssuer = false,
             ValidateAudience = false,
             ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenSettings.Secret)),
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_tokenSettings.Secret)),
             ValidateLifetime = false
         };
 
@@ -77,7 +77,7 @@ public class TokenService : ITokenService
             || !jwtSecurityToken.Header.Alg
             .Equals(SecurityAlgorithms.HmacSha256,
             StringComparison.InvariantCultureIgnoreCase))
-            throw new SecurityTokenException("Token bulunamadı.");
+            throw new SecurityTokenException("Token dosn't exist.");
 
         return principal;
 

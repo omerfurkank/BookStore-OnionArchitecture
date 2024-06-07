@@ -11,6 +11,6 @@ public class CreateBookCommandRequestValidator : AbstractValidator<CreateBookCom
 {
     public CreateBookCommandRequestValidator()
     {
-        RuleFor(p => p.Name).NotEmpty().MinimumLength(2);
+        RuleFor(b => b.Name).NotEmpty().MinimumLength(2);
     }
 }
