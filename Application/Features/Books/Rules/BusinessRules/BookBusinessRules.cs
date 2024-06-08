@@ -12,13 +12,10 @@ public class BookBusinessRules
     {
         _bookRepository = bookRepository;
     }
-    public async Task BookNameCannotBeDuplicatedWhenInserted(string name)
+    public async Task CheckBookExists(string name)
     {
         Book? result = await _bookRepository.GetAsync(predicate: b => b.Name.ToLower() == name.ToLower());
 
-        if (result is not null)
-        {
-            throw new BusinessException(BookMessages.BookNameExists);
-        }
+        if (result is not null) { throw new BusinessException(BookMessages.BookNameExists); }
     }
 }

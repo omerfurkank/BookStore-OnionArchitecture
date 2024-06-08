@@ -20,4 +20,9 @@
     <ProjectReference Include="..\Domain\Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Features\Roles\Profiles\" />
+    <Folder Include="Features\Users\" />
+  </ItemGroup>
+
 </Project>

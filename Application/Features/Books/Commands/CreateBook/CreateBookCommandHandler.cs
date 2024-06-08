@@ -21,7 +21,7 @@ public class CreateBookCommandHandler : IRequestHandler<CreateBookCommandRequest
 
     public async Task<CreateBookCommandResponse> Handle(CreateBookCommandRequest request, CancellationToken cancellationToken)
     {
-        await _businessRules.BookNameCannotBeDuplicatedWhenInserted(request.Name);
+        await _businessRules.CheckBookExists(request.Name);
 
         Book mappedBook = _mapper.Map<Book>(request);
         Book createdBook = await _bookRepository.AddAsync(mappedBook);
