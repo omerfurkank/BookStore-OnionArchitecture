@@ -5,6 +5,7 @@ using Application.Features.Books.Queries.GetByIdBook;
 using Application.Features.Books.Queries.GetListBook;
 using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -32,6 +33,7 @@ public class BooksController : ControllerBase
         GetByIdBookQueryResponse result = await _mediator.Send(getByIdProductQuery);
         return Ok(result);
     }
+    [Authorize]
     [HttpPost]
     public async Task<IActionResult> Add([FromBody] CreateBookCommandRequest command)
     {

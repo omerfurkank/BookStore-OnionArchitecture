@@ -20,10 +20,27 @@ public class AuthBusinessRules
         _userManager = userManager;
     }
 
-    public async Task CheckUserExists(string email)
+    public async Task CheckUserExistsToRegister(string email)
     {
         var result = await _userManager.FindByEmailAsync(email);
 
         if (result is not null) { throw new BusinessException("AuthMessages.UserExists"); }
+    }
+    public async Task CheckUserExistsToLogin(string email)
+    {
+        var result = await _userManager.FindByEmailAsync(email);
+
+        if (result is null) { throw new BusinessException("AuthMessages.UserDoesNotExist"); }
+    }
+    public async Task CheckPasswordToLogin(User user, string password)
+    {
+        var loginUser = await _userManager.FindByEmailAsync(user.Email);
+        bool result = await _userManager.CheckPasswordAsync(loginUser, password);
+
+        if (!result) { throw new BusinessException("AuthMessages.PasswordDoesNotMach"); }
+    }
+    public async Task CheckRefreshTokenExpiredDate(DateTime? expiredDate)
+    {
+        if (expiredDate <= DateTime.Now) throw new BusinessException(); 
     }
 }

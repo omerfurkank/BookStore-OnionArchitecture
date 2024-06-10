@@ -1,6 +1,9 @@
 ﻿using Application.Exceptions;
+using Application.Features.Auth.Rules.BusinessRules;
+using Application.Features.Auth.Rules.ValidationRules;
 using Application.Features.Books.Rules.BusinessRules;
 using Application.Features.Books.Rules.ValidationRules;
+using Application.Features.Roles.Rules.BusinessRules;
 using Application.Pipelines;
 using FluentValidation;
 using MediatR;
@@ -24,11 +27,15 @@ public static class ApplicationServiceRegistration
         services.AddValidatorsFromAssemblyContaining<CreateBookCommandRequestValidator>();
         services.AddValidatorsFromAssemblyContaining<UpdateBookCommandRequestValidator>();
 
+        services.AddValidatorsFromAssemblyContaining<RegisterCommandRequestValidator>();
+
         services.AddTransient<ExceptionMiddleware>();
 
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
         services.AddScoped<BookBusinessRules>();
+        services.AddScoped<AuthBusinessRules>();
+        services.AddScoped<RoleBusinessRules>();
 
         return services;
     }

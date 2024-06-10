@@ -10,5 +10,5 @@ public class User : IdentityUser<int>
 {
     public string FullName { get; set; }
     public string? RefreshToken { get; set; }
-    public DateTime RefreshTokenExpiredTime { get; set; }
+    public DateTime? RefreshTokenExpiredTime { get; set; }
 }

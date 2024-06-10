@@ -1,4 +1,5 @@
 ﻿using Application.Features.Roles.Rules.BusinessRules;
+using Application.Repositories;
 using AutoMapper;
 using Domain.Entities.Identity;
 using MediatR;
@@ -12,13 +13,13 @@ using System.Threading.Tasks;
 namespace Application.Features.Roles.Commands.CreateRole;
 public class CreateRoleCommandHandler : IRequestHandler<CreateRoleCommandRequest, CreateRoleCommandResponse>
 {
-    private readonly RoleManager<Role> _roleManager;
+    private readonly IRoleRepository _roleRepository;
     private readonly IMapper _mapper;
     private readonly RoleBusinessRules _roleBusinessRules;
 
-    public CreateRoleCommandHandler(RoleManager<Role> roleManager, IMapper mapper, RoleBusinessRules roleBusinessRules)
+    public CreateRoleCommandHandler(IRoleRepository roleRepository, IMapper mapper, RoleBusinessRules roleBusinessRules)
     {
-        _roleManager = roleManager;
+        _roleRepository = roleRepository;
         _mapper = mapper;
         _roleBusinessRules = roleBusinessRules;
     }
@@ -27,13 +28,13 @@ public class CreateRoleCommandHandler : IRequestHandler<CreateRoleCommandRequest
     {
         await _roleBusinessRules.CheckRoleExists(request.Name);
 
-        var role = _mapper.Map<Role>(request);
-        var result = await _roleManager.CreateAsync(role);
-        if (!result.Succeeded)
+        var result = await _roleRepository.CreateRole(request.Name);
+        if (result.Succeeded)
         {
-            var response = _mapper.Map<CreateRoleCommandResponse>(result);
+            CreateRoleCommandResponse response = new() { Name = request.Name };
             return response;
         }
+        
         throw new Exception("RoleMessages.RoleExists");
 
     }

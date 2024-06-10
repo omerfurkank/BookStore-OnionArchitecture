@@ -19,6 +19,6 @@ public class RoleBusinessRules
     public async Task CheckRoleExists(string roleName)
     {
         var result = await _roleManager.RoleExistsAsync(roleName);
-        if (!result) { throw new BusinessException; }
+        if (result) { throw new BusinessException(); }
     }
 }

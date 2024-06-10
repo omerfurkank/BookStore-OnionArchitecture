@@ -13,5 +13,6 @@ public class MappingProfiles : Profile
     public MappingProfiles()
     {
         CreateMap<User,RegisterCommandRequest>().ReverseMap();
+        CreateMap<User, RegisterCommandResponse>().ReverseMap();
     }
 }
