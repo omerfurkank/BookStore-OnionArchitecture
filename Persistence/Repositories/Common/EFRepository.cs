@@ -40,7 +40,7 @@ where TEntity : Entity
         if (!tracking) queryable = queryable.AsNoTracking();
         if (include is not null) queryable = include(queryable);
         if (predicate is not null) queryable = Query().Where(predicate);
-
+        var a = await queryable.Skip(index * size).Take(size).ToListAsync();
         return await queryable.Skip(index * size).Take(size).ToListAsync();
     }
 

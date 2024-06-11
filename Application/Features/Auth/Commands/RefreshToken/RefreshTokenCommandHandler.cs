@@ -26,7 +26,7 @@ public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommandReq
     {
         ClaimsPrincipal? principal = _tokenService.GetPrincipalFromExpiredToken(request.AccessToken);
         string? email = principal.FindFirstValue(ClaimTypes.Email);
-        User? user = await _userRepository.GetUserAsync(email);
+        User? user = await _userRepository.GetUserByEmailAsync(email);
         IList<string> roles = await _userRepository.GetUserRolesAsync(user);
 
         await _authBusinessRules.CheckRefreshTokenExpiredDate(user.RefreshTokenExpiredTime);

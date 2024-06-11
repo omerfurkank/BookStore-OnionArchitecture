@@ -21,6 +21,7 @@ public class GetListBookQueryHandler : IRequestHandler<GetListBookQueryRequest, 
     {
         var books = await _bookRepository.GetListAsync(include: b => b.Include(b => b.Author), index: request.Index, size: request.Size);
         IList<GetListBookQueryResponse> response = _mapper.Map<IList<GetListBookQueryResponse>>(books);
-        throw new Exception("dsf");//return response;
+        /*throw new Exception("dsf");*/
+        return response;
     }
 }

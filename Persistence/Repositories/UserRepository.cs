@@ -1,7 +1,9 @@
 ﻿using Application.Repositories;
 using Domain.Entities.Identity;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Metadata;
@@ -17,7 +19,8 @@ public class UserRepository : IUserRepository
     {
         _userManager = userManager;
     }
-    public async Task<User?> GetUserAsync(string email) => await _userManager.FindByEmailAsync(email);
+    public async Task<User?> GetUserByEmailAsync(string email) => await _userManager.FindByEmailAsync(email);
+    public async Task<IList<User>> GetAllUserAsync() => await _userManager.Users.ToListAsync();
     public async Task<IList<string>> GetUserRolesAsync(User user) => await _userManager.GetRolesAsync(user);
     public async Task<IdentityResult> AddRoleToUserAsync(User user, string role) => await _userManager.AddToRoleAsync(user, role);
 

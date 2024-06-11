@@ -2,6 +2,7 @@
 using Application.Features.Books.Commands.DeleteBook;
 using Application.Features.Books.Commands.UpdateBook;
 using Application.Features.Books.Queries.GetByIdBook;
+using Application.Features.Books.Queries.GetListBook;
 using AutoMapper;
 using Domain.Entities;
 using System;
@@ -25,5 +26,6 @@ public class MappingProfiles : Profile
         CreateMap<Book, DeleteBookCommandRequest>().ReverseMap();
 
         CreateMap<Book, GetByIdBookQueryResponse>().ForMember(r => r.AuthorName, opt => opt.MapFrom(b => b.Author.Name));
+        CreateMap<Book, GetListBookQueryResponse>().ForMember(r => r.AuthorName, opt => opt.MapFrom(b => b.Author.Name));
     }
 }

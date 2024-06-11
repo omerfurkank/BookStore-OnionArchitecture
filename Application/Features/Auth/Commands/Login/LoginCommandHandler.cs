@@ -29,7 +29,7 @@ public class LoginCommandHandler : IRequestHandler<LoginCommandRequest, LoginCom
 
     public async Task<LoginCommandResponse> Handle(LoginCommandRequest request, CancellationToken cancellationToken)
     {
-        User? user = await _userRepository.GetUserAsync(request.Email);
+        User? user = await _userRepository.GetUserByEmailAsync(request.Email);
 
         await _authBusinessRules.CheckUserExistsToLogin(request.Email);
         await _authBusinessRules.CheckPasswordToLogin(user, request.Password);
