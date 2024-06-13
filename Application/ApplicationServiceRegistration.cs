@@ -4,7 +4,8 @@ using Application.Features.Auth.Rules.ValidationRules;
 using Application.Features.Books.Rules.BusinessRules;
 using Application.Features.Books.Rules.ValidationRules;
 using Application.Features.Roles.Rules.BusinessRules;
-using Application.Pipelines;
+using Application.Pipelines.Caching;
+using Application.Pipelines.Validation;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
@@ -32,6 +33,7 @@ public static class ApplicationServiceRegistration
         services.AddTransient<ExceptionMiddleware>();
 
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(CachingBehavior<,>));
 
         services.AddScoped<BookBusinessRules>();
         services.AddScoped<AuthBusinessRules>();
