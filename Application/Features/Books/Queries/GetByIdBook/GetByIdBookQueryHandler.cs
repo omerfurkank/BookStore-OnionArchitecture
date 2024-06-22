@@ -16,6 +16,10 @@ public class GetByIdBookQueryHandler : IRequestHandler<GetByIdBookQueryRequest, 
     }
     public async Task<GetByIdBookQueryResponse> Handle(GetByIdBookQueryRequest request, CancellationToken cancellationToken)
     {
+        //if (request.Id<10)
+        //{
+        //    throw new Exception("x");
+        //}
         var book = await _bookRepository.GetAsync(predicate: b => b.Id == request.Id, include: b => b.Include(p => p.Author));
         GetByIdBookQueryResponse response = _mapper.Map<GetByIdBookQueryResponse>(book);
         return response;

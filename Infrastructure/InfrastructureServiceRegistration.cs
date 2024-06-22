@@ -1,5 +1,6 @@
 ﻿using Domain.Entities.Identity;
 using Infrastructure.RedisCache;
+using Infrastructure.Serilog;
 using Infrastructure.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
@@ -16,11 +17,16 @@ public static class InfrastructureServiceRegistration
 {
     public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
     {
+        services.AddHttpContextAccessor();
+
         services.Configure<TokenSettings>(configuration.GetSection("JWT"));
         services.AddTransient<ITokenService, TokenService>();
 
         services.Configure<RedisCacheSettings>(configuration.GetSection("RedisCacheSettings"));
         services.AddTransient<ICacheService, RedisCacheService>();
+
+        services.Configure<PostgreLogSettings>(configuration.GetSection("SeriLogConfigurations:PostgreSqlConfiguration"));
+        services.AddSingleton<LoggerServiceBase, PostgreSqlLogger>();
 
         services.AddAuthentication(opt =>
         {

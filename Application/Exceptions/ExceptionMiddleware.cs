@@ -1,15 +1,25 @@
 ﻿using FluentValidation;
+using Infrastructure.Serilog;
 using Microsoft.AspNetCore.Http;
 using SendGrid.Helpers.Errors.Model;
+using Serilog.Context;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Application.Exceptions;
 public class ExceptionMiddleware : IMiddleware
 {
+    private readonly LoggerServiceBase _logger;
+
+    public ExceptionMiddleware(LoggerServiceBase logger)
+    {
+        _logger = logger;
+    }
+
     public async Task InvokeAsync(HttpContext httpContext, RequestDelegate next)
     {
         try
@@ -18,6 +28,9 @@ public class ExceptionMiddleware : IMiddleware
         }
         catch (Exception ex)
         {
+            LogContext.PushProperty("user_name", httpContext?.User?.Claims?.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value);
+            LogContext.PushProperty("ip_adress", httpContext?.Connection?.RemoteIpAddress?.MapToIPv4().ToString());
+            _logger.Error(ex.Message);
             await HandleExceptionAsync(httpContext, ex);
         }
     }

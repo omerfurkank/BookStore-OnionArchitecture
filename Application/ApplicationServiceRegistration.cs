@@ -5,6 +5,7 @@ using Application.Features.Books.Rules.BusinessRules;
 using Application.Features.Books.Rules.ValidationRules;
 using Application.Features.Roles.Rules.BusinessRules;
 using Application.Pipelines.Caching;
+using Application.Pipelines.Logging;
 using Application.Pipelines.Validation;
 using FluentValidation;
 using MediatR;
@@ -34,6 +35,7 @@ public static class ApplicationServiceRegistration
 
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(CachingBehavior<,>));
+        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
 
         services.AddScoped<BookBusinessRules>();
         services.AddScoped<AuthBusinessRules>();

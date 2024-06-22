@@ -55,9 +55,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.ConfigureExceptionHandlingMiddleware();
-
 app.UseAuthorization();
+
+app.ConfigureExceptionHandlingMiddleware();
 
 app.MapControllers();
 
