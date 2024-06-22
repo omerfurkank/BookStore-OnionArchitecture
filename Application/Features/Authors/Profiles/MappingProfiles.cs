@@ -2,6 +2,7 @@
 using Application.Features.Authors.Commands.DeleteAuthor;
 using Application.Features.Authors.Commands.UpdateAuthor;
 using Application.Features.Authors.Queries.GetByIdAuthor;
+using Application.Features.Authors.Queries.GetListAuthor;
 using Application.Features.Books.Commands.CreateBook;
 using Application.Features.Books.Commands.DeleteBook;
 using Application.Features.Books.Commands.UpdateBook;
@@ -22,11 +23,14 @@ public class MappingProfiles : Profile
         CreateMap<Author, CreateAuthorCommandResponse>().ReverseMap();
         CreateMap<Author, CreateAuthorCommandRequest>().ReverseMap();
 
-        //CreateMap<Author, UpdateAuthorCommandResponse>().ReverseMap();
-        //CreateMap<Author, UpdateAuthorCommandRequest>().ReverseMap();
+        CreateMap<Author, UpdateAuthorCommandResponse>().ReverseMap();
+        CreateMap<Author, UpdateAuthorCommandRequest>().ReverseMap();
 
-        //CreateMap<Author, DeleteAuthorCommandResponse>().ReverseMap();
-        //CreateMap<Author, DeleteAuthorCommandRequest>().ReverseMap();
+        CreateMap<Author, DeleteAuthorCommandResponse>().ReverseMap();
+        CreateMap<Author, DeleteAuthorCommandRequest>().ReverseMap();
+
+        CreateMap<Author, GetByIdAuthorQueryResponse>().ReverseMap();
+        CreateMap<Author, GetListAuthorQueryResponse>().ReverseMap();
 
     }
 }
