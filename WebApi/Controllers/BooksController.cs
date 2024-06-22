@@ -21,33 +21,33 @@ public class BooksController : ControllerBase
         _mediator = mediator;
     }
 
-    [HttpGet]
+    [HttpGet("getList")]
     public async Task<IActionResult> GetList([FromQuery] GetListBookQueryRequest request)
     {
         IList<GetListBookQueryResponse> result = await _mediator.Send(request);
         return Ok(result);
     }
-    [HttpGet("{Id}")]
-    public async Task<IActionResult> Get([FromRoute] GetByIdBookQueryRequest getByIdProductQuery)
+    [HttpGet("{Id}",Name = "getBookById")]
+    public async Task<IActionResult> GetById([FromRoute] GetByIdBookQueryRequest getByIdProductQuery)
     {
         GetByIdBookQueryResponse result = await _mediator.Send(getByIdProductQuery);
         return Ok(result);
     }
-    [Authorize]
-    [HttpPost]
+    //[Authorize]
+    [HttpPost("add")]
     public async Task<IActionResult> Add([FromBody] CreateBookCommandRequest command)
     {
         CreateBookCommandResponse result = await _mediator.Send(command);
         return Created("", result);
     }
-    [HttpPut]
+    [HttpPut("update")]
     public async Task<IActionResult> Update([FromBody] UpdateBookCommandRequest command)
     {
 
         UpdateBookCommandResponse result = await _mediator.Send(command);
         return Ok(result);
     }
-    [HttpDelete]
+    [HttpDelete("delete")]
     public async Task<IActionResult> Delete([FromBody] DeleteBookCommandRequest command)
     {
         DeleteBookCommandResponse result = await _mediator.Send(command);

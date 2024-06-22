@@ -20,9 +20,16 @@ public class UserRepository : IUserRepository
         _userManager = userManager;
     }
     public async Task<User?> GetUserByEmailAsync(string email) => await _userManager.FindByEmailAsync(email);
+    public async Task<User?> GetUserByIdAsync(string id) => await _userManager.FindByIdAsync(id);
     public async Task<IList<User>> GetAllUserAsync() => await _userManager.Users.ToListAsync();
     public async Task<IList<string>> GetUserRolesAsync(User user) => await _userManager.GetRolesAsync(user);
-    public async Task<IdentityResult> AddRoleToUserAsync(User user, string role) => await _userManager.AddToRoleAsync(user, role);
+    public async Task<IdentityResult> AddRolesToUserAsync(int id, string[] addedRoles)
+    {
+            User? user = await _userManager.FindByIdAsync(id.ToString());
+            var userRoles = await _userManager.GetRolesAsync(user);
+            await _userManager.RemoveFromRolesAsync(user, userRoles);
+            return await _userManager.AddToRolesAsync(user, addedRoles);
+    } 
 
     public async Task<IdentityResult> CreateUserAsync(User user, string password) => await _userManager.CreateAsync(user,password);
     public async Task<IdentityResult> UpdateUserAsync(User user) => await _userManager.UpdateAsync(user);

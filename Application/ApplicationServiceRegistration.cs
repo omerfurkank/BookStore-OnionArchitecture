@@ -1,9 +1,11 @@
 ﻿using Application.Exceptions;
 using Application.Features.Auth.Rules.BusinessRules;
 using Application.Features.Auth.Rules.ValidationRules;
+using Application.Features.Authors.Rules.BusinessRules;
 using Application.Features.Books.Rules.BusinessRules;
 using Application.Features.Books.Rules.ValidationRules;
 using Application.Features.Roles.Rules.BusinessRules;
+using Application.Pipelines.Auth;
 using Application.Pipelines.Caching;
 using Application.Pipelines.Logging;
 using Application.Pipelines.Validation;
@@ -36,8 +38,10 @@ public static class ApplicationServiceRegistration
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(CachingBehavior<,>));
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
+        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(AuthorizationBehavior<,>));
 
         services.AddScoped<BookBusinessRules>();
+        services.AddScoped<AuthorBusinessRules>();
         services.AddScoped<AuthBusinessRules>();
         services.AddScoped<RoleBusinessRules>();
 

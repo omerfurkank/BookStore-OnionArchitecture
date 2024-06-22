@@ -2,6 +2,7 @@
 using Application.Features.Authors.Commands.DeleteAuthor;
 using Application.Features.Authors.Commands.UpdateAuthor;
 using Application.Features.Authors.Queries.GetByIdAuthor;
+using Application.Features.Authors.Queries.GetListAuthor;
 using Application.Features.Books.Commands.CreateBook;
 using Application.Features.Books.Commands.DeleteBook;
 using Application.Features.Books.Commands.UpdateBook;
@@ -21,35 +22,34 @@ public class AuthorsController : ControllerBase
     {
         _mediator = mediator;
     }
-    //[HttpGet]
-    //public async Task<IActionResult> GetList([FromQuery] PageRequest pageRequest)
-    //{
-    //    IList<GetListBookQueryResponse> result = await _mediator.Send(
-    //        new GetListProductQuery() { PageRequest = pageRequest });
-    //    return Ok(result);
-    //}
-    [HttpGet("{Id}")]
-    public async Task<IActionResult> Get([FromRoute] GetByIdAuthorQueryRequest getByIdAuthorQuery)
+    [HttpGet("getList")]
+    public async Task<IActionResult> GetList([FromQuery] GetListAuthorQueryRequest request)
+    {
+        IList<GetListAuthorQueryResponse> result = await _mediator.Send(request);
+        return Ok(result);
+    }
+    [HttpGet("{Id}",Name ="getAuthorById")]
+    public async Task<IActionResult> GetById([FromRoute] GetByIdAuthorQueryRequest getByIdAuthorQuery)
     {
         GetByIdAuthorQueryResponse result = await _mediator.Send(getByIdAuthorQuery);
         return Ok(result);
     }
-    [HttpPost]
-    public async Task<IActionResult> Add([FromBody] CreateAuthorCommandRequest command)
+    [HttpPost("add")]
+    public async Task<IActionResult> Add([FromBody] CreateAuthorCommandRequest request)
     {
-        CreateAuthorCommandResponse result = await _mediator.Send(command);
+        CreateAuthorCommandResponse result = await _mediator.Send(request);
         return Created("", result);
     }
-    //[HttpPut]
-    //public async Task<IActionResult> Update([FromBody] UpdateAuthorCommandRequest command)
-    //{
-    //    UpdateAuthorCommandResponse result = await _mediator.Send(command);
-    //    return Ok(result);
-    //}
-    //[HttpDelete]
-    //public async Task<IActionResult> Delete([FromBody] DeleteAuthorCommandRequest command)
-    //{
-    //    DeleteAuthorCommandResponse result = await _mediator.Send(command);
-    //    return Ok(result);
-    //}
+    [HttpPut("update")]
+    public async Task<IActionResult> Update([FromBody] UpdateAuthorCommandRequest request)
+    {
+        UpdateAuthorCommandResponse result = await _mediator.Send(request);
+        return Ok(result);
+    }
+    [HttpDelete("delete")]
+    public async Task<IActionResult> Delete([FromBody] DeleteAuthorCommandRequest request)
+    {
+        DeleteAuthorCommandResponse result = await _mediator.Send(request);
+        return Ok(result);
+    }
 }

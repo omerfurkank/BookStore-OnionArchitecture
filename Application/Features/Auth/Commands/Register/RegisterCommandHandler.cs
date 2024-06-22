@@ -30,7 +30,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommandRequest, Re
         var result = await _userRepository.CreateUserAsync(user,request.Password);
         if (result.Succeeded)
         {
-            await _userRepository.AddRoleToUserAsync(user, "user");
+            await _userRepository.AddRolesToUserAsync(user.Id, new[] { "user" });
             var response = _mapper.Map<RegisterCommandResponse>(user);
             return response;
         }

@@ -1,6 +1,6 @@
-﻿using Application.Features.Books.Queries.GetByIdBook;
-using Application.Repositories;
+﻿using Application.Repositories;
 using AutoMapper;
+using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,7 +19,7 @@ public class GetListBookQueryHandler : IRequestHandler<GetListBookQueryRequest, 
 
     public async Task<IList<GetListBookQueryResponse>> Handle(GetListBookQueryRequest request, CancellationToken cancellationToken)
     {
-        var books = await _bookRepository.GetListAsync(include: b => b.Include(b => b.Author), index: request.Index, size: request.Size);
+        IList<Book> books = await _bookRepository.GetListAsync(include: b => b.Include(b => b.Author), index: request.Index, size: request.Size);
         IList<GetListBookQueryResponse> response = _mapper.Map<IList<GetListBookQueryResponse>>(books);
         /*throw new Exception("dsf");*/
         return response;

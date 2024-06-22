@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using Application.Exceptions.CustomExceptions;
+using FluentValidation;
 using Infrastructure.Serilog;
 using Microsoft.AspNetCore.Http;
 using SendGrid.Helpers.Errors.Model;
@@ -31,6 +32,7 @@ public class ExceptionMiddleware : IMiddleware
             LogContext.PushProperty("user_name", httpContext?.User?.Claims?.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value);
             LogContext.PushProperty("ip_adress", httpContext?.Connection?.RemoteIpAddress?.MapToIPv4().ToString());
             _logger.Error(ex.Message);
+
             await HandleExceptionAsync(httpContext, ex);
         }
     }
@@ -40,13 +42,6 @@ public class ExceptionMiddleware : IMiddleware
         int statusCode = GetStatusCode(exception);
         httpContext.Response.StatusCode = statusCode;
         httpContext.Response.ContentType = "application/json";
-
-        if (exception.GetType() == typeof(ValidationException))
-            return httpContext.Response.WriteAsync(new ExceptionModel
-            {
-                Errors = ((ValidationException)exception).Errors.Select(x => x.ErrorMessage),
-                StatusCode = StatusCodes.Status400BadRequest
-            }.ToString());
 
         List<string> errors = new()
             {
@@ -67,6 +62,7 @@ public class ExceptionMiddleware : IMiddleware
             BadRequestException => StatusCodes.Status400BadRequest,
             NotFoundException => StatusCodes.Status400BadRequest,
             ValidationException => StatusCodes.Status422UnprocessableEntity,
+            AuthorizationException => StatusCodes.Status401Unauthorized,
             _ => StatusCodes.Status500InternalServerError
         };
 }
