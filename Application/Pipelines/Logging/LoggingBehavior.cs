@@ -25,12 +25,13 @@ public class LoggingBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, 
 
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
-        //var x = httpContextAccessor.HttpContext?.Connection?.RemoteIpAddress?.MapToIPv4().ToString();
+        LogContext.PushProperty("method_name", $"{httpContextAccessor.HttpContext?.Request.RouteValues["controller"]}/ {httpContextAccessor.HttpContext?.Request.RouteValues["action"]}");
         LogContext.PushProperty("user_name", httpContextAccessor.HttpContext?.User?.Claims?.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value);
         LogContext.PushProperty("ip_adress", httpContextAccessor.HttpContext?.Connection?.RemoteIpAddress?.MapToIPv4().ToString());
+
         _logger.Info($"Handling {typeof(TRequest).Name}");
         var response = await next();
-         _logger.Info($"Handled {typeof(TResponse).Name}");
+        _logger.Info($"Handled {typeof(TResponse).Name}");
 
         return await next();
     }

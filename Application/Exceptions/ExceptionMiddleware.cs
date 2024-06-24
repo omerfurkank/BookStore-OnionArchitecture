@@ -2,6 +2,7 @@
 using FluentValidation;
 using Infrastructure.Serilog;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using SendGrid.Helpers.Errors.Model;
 using Serilog.Context;
 using System;
@@ -10,6 +11,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Collections.Specialized.BitVector32;
 
 namespace Application.Exceptions;
 public class ExceptionMiddleware : IMiddleware
@@ -29,6 +31,7 @@ public class ExceptionMiddleware : IMiddleware
         }
         catch (Exception ex)
         {
+            LogContext.PushProperty("method_name", $"{httpContext.Request.RouteValues["controller"]}/ {httpContext.Request.RouteValues["action"]}");
             LogContext.PushProperty("user_name", httpContext?.User?.Claims?.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value);
             LogContext.PushProperty("ip_adress", httpContext?.Connection?.RemoteIpAddress?.MapToIPv4().ToString());
             _logger.Error(ex.Message);

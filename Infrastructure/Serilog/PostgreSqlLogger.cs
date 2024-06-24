@@ -14,6 +14,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using static Infrastructure.Serilog.ClientIpColumnWriter;
 
 namespace Infrastructure.Serilog;
 public class PostgreSqlLogger : LoggerServiceBase
@@ -26,14 +27,14 @@ public class PostgreSqlLogger : LoggerServiceBase
         var columnWriters = new Dictionary<string, ColumnWriterBase>
         {
             { "message", new RenderedMessageColumnWriter(NpgsqlDbType.Text) },
+            { "method_name", new MethodNameColumnWriter() },
             { "message_template", new MessageTemplateColumnWriter(NpgsqlDbType.Text) },
             { "level", new LevelColumnWriter(true, NpgsqlTypes.NpgsqlDbType.Varchar) },
             { "time_stamp", new TimestampColumnWriter(NpgsqlTypes.NpgsqlDbType.Timestamp) },
             { "exception", new ExceptionColumnWriter() },
             { "log_event", new LogEventSerializedColumnWriter(NpgsqlDbType.Json) },
             { "user_name", new UsernameColumnWriter() },
-            { "ip_adress", new ClientIpColumnWriter() }
-
+            { "ip_adress", new ClientIpColumnWriter() }          
         };
 
         ColumnOptions columnOptions = new();
@@ -72,5 +73,15 @@ public class ClientIpColumnWriter : ColumnWriterBase
     {
         logEvent.Properties.TryGetValue("ip_adress", out var value);
         return value?.ToString() ?? null;
+    }
+    public class MethodNameColumnWriter : ColumnWriterBase
+    {
+        public MethodNameColumnWriter() : base(NpgsqlDbType.Varchar) { }
+
+        public override object GetValue(LogEvent logEvent, IFormatProvider formatProvider = null)
+        {
+            logEvent.Properties.TryGetValue("method_name", out var value);
+            return value?.ToString() ?? null;
+        }
     }
 }
