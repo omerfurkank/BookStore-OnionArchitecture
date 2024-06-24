@@ -14,7 +14,7 @@ public class UsersController : ControllerBase
     {
         _mediator = mediator;
     }
-    [HttpPost("addRoleToUser")]
+    [HttpPost("addRolesToUser")]
     public async Task<IActionResult> Add([FromBody] AssignRoleToUserCommandRequest command)
     {
         AssignRoleToUserCommandResponse result = await _mediator.Send(command);

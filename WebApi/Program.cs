@@ -42,7 +42,6 @@ builder.Services.AddSwaggerGen(c =>
             },
             Array.Empty<string>()
         }
-
     });
 });
 

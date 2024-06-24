@@ -34,4 +34,17 @@ public class RedisCacheService : ICacheService
         TimeSpan timeUnitExpiration = expirationTime.Value - DateTime.Now;
         await database.StringSetAsync(key, JsonConvert.SerializeObject(value), timeUnitExpiration);
     }
+    public async Task RemoveAsync(string key)
+    {
+        await database.KeyDeleteAsync(key);
+    }
+    public async Task RemoveAllAsync()
+    {
+        var endpoints = redisConnection.GetEndPoints();
+        foreach (var endpoint in endpoints)
+        {
+            var server = redisConnection.GetServer(endpoint);
+            await server.FlushDatabaseAsync();
+        }
+    }
 }
