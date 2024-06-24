@@ -15,9 +15,9 @@ public class RolesController : ControllerBase
         _mediator = mediator;
     }
     [HttpPost("add")]
-    public async Task<IActionResult> Add([FromBody] CreateRoleCommandRequest command)
+    public async Task<IActionResult> Add([FromBody] CreateRoleCommandRequest request)
     {
-        CreateRoleCommandResponse result = await _mediator.Send(command);
-        return Created("", result);
+        CreateRoleCommandResponse response = await _mediator.Send(request);
+        return Created("", response);
     }
 }

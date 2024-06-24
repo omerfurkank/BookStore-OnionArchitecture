@@ -24,33 +24,33 @@ public class BooksController : ControllerBase
     [HttpGet("getList")]
     public async Task<IActionResult> GetList([FromQuery] GetListBookQueryRequest request)
     {
-        IList<GetListBookQueryResponse> result = await _mediator.Send(request);
-        return Ok(result);
+        IList<GetListBookQueryResponse> response = await _mediator.Send(request);
+        return Ok(response);
     }
     [HttpGet("{Id}",Name = "getBookById")]
-    public async Task<IActionResult> GetById([FromRoute] GetByIdBookQueryRequest getByIdProductQuery)
+    public async Task<IActionResult> GetById([FromRoute] GetByIdBookQueryRequest request)
     {
-        GetByIdBookQueryResponse result = await _mediator.Send(getByIdProductQuery);
-        return Ok(result);
+        GetByIdBookQueryResponse response = await _mediator.Send(request);
+        return Ok(response);
     }
     //[Authorize]
     [HttpPost("add")]
-    public async Task<IActionResult> Add([FromBody] CreateBookCommandRequest command)
+    public async Task<IActionResult> Add([FromBody] CreateBookCommandRequest request)
     {
-        CreateBookCommandResponse result = await _mediator.Send(command);
-        return Created("", result);
+        CreateBookCommandResponse response = await _mediator.Send(request);
+        return Created("", response);
     }
     [HttpPut("update")]
-    public async Task<IActionResult> Update([FromBody] UpdateBookCommandRequest command)
+    public async Task<IActionResult> Update([FromBody] UpdateBookCommandRequest request)
     {
 
-        UpdateBookCommandResponse result = await _mediator.Send(command);
-        return Ok(result);
+        UpdateBookCommandResponse response = await _mediator.Send(request);
+        return Ok(response);
     }
     [HttpDelete("delete")]
-    public async Task<IActionResult> Delete([FromBody] DeleteBookCommandRequest command)
+    public async Task<IActionResult> Delete([FromBody] DeleteBookCommandRequest request)
     {
-        DeleteBookCommandResponse result = await _mediator.Send(command);
-        return Ok(result);
+        DeleteBookCommandResponse response = await _mediator.Send(request);
+        return Ok(response);
     }
 }

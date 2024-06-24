@@ -7,6 +7,7 @@ using Application.Features.Books.Commands.CreateBook;
 using Application.Features.Books.Commands.DeleteBook;
 using Application.Features.Books.Commands.UpdateBook;
 using Application.Features.Books.Queries.GetByIdBook;
+using Azure.Core;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -25,31 +26,31 @@ public class AuthorsController : ControllerBase
     [HttpGet("getList")]
     public async Task<IActionResult> GetList([FromQuery] GetListAuthorQueryRequest request)
     {
-        IList<GetListAuthorQueryResponse> result = await _mediator.Send(request);
-        return Ok(result);
+        IList<GetListAuthorQueryResponse> response = await _mediator.Send(request);
+        return Ok(response);
     }
     [HttpGet("{Id}",Name ="getAuthorById")]
-    public async Task<IActionResult> GetById([FromRoute] GetByIdAuthorQueryRequest getByIdAuthorQuery)
+    public async Task<IActionResult> GetById([FromRoute] GetByIdAuthorQueryRequest request)
     {
-        GetByIdAuthorQueryResponse result = await _mediator.Send(getByIdAuthorQuery);
-        return Ok(result);
+        GetByIdAuthorQueryResponse response = await _mediator.Send(request);
+        return Ok(response);
     }
     [HttpPost("add")]
     public async Task<IActionResult> Add([FromBody] CreateAuthorCommandRequest request)
     {
-        CreateAuthorCommandResponse result = await _mediator.Send(request);
-        return Created("", result);
+        CreateAuthorCommandResponse response = await _mediator.Send(request);
+        return Created("", response);
     }
     [HttpPut("update")]
     public async Task<IActionResult> Update([FromBody] UpdateAuthorCommandRequest request)
     {
-        UpdateAuthorCommandResponse result = await _mediator.Send(request);
-        return Ok(result);
+        UpdateAuthorCommandResponse response = await _mediator.Send(request);
+        return Ok(response);
     }
     [HttpDelete("delete")]
     public async Task<IActionResult> Delete([FromBody] DeleteAuthorCommandRequest request)
     {
-        DeleteAuthorCommandResponse result = await _mediator.Send(request);
-        return Ok(result);
+        DeleteAuthorCommandResponse response = await _mediator.Send(request);
+        return Ok(response);
     }
 }
