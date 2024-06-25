@@ -12,45 +12,31 @@ using Microsoft.AspNetCore.Mvc;
 namespace WebApi.Controllers;
 [Route("api/[controller]")]
 [ApiController]
-public class BooksController : ControllerBase
+public class BooksController : BaseController
 {
-    private readonly IMediator _mediator;
-
-    public BooksController(IMediator mediator)
-    {
-        _mediator = mediator;
-    }
-
     [HttpGet("getList")]
     public async Task<IActionResult> GetList([FromQuery] GetListBookQueryRequest request)
     {
-        IList<GetListBookQueryResponse> response = await _mediator.Send(request);
-        return Ok(response);
+        return Ok(await Mediator.Send(request));
     }
     [HttpGet("{Id}",Name = "getBookById")]
     public async Task<IActionResult> GetById([FromRoute] GetByIdBookQueryRequest request)
     {
-        GetByIdBookQueryResponse response = await _mediator.Send(request);
-        return Ok(response);
+        return Ok(await Mediator.Send(request));
     }
-    //[Authorize]
     [HttpPost("add")]
     public async Task<IActionResult> Add([FromBody] CreateBookCommandRequest request)
     {
-        CreateBookCommandResponse response = await _mediator.Send(request);
-        return Created("", response);
+        return Created("", await Mediator.Send(request));
     }
     [HttpPut("update")]
     public async Task<IActionResult> Update([FromBody] UpdateBookCommandRequest request)
     {
-
-        UpdateBookCommandResponse response = await _mediator.Send(request);
-        return Ok(response);
+        return Ok(await Mediator.Send(request));
     }
     [HttpDelete("delete")]
     public async Task<IActionResult> Delete([FromBody] DeleteBookCommandRequest request)
     {
-        DeleteBookCommandResponse response = await _mediator.Send(request);
-        return Ok(response);
+        return Ok(await Mediator.Send(request));
     }
 }
