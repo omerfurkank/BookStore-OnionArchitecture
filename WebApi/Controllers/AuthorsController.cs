@@ -10,7 +10,7 @@ namespace WebApi.Controllers;
 [ApiController]
 public class AuthorsController : BaseController
 {
-    [HttpGet("getList")]
+    [HttpGet()]
     public async Task<IActionResult> GetList([FromQuery] GetListAuthorQueryRequest request)
     {
         return Ok(await Mediator.Send(request));
@@ -20,17 +20,17 @@ public class AuthorsController : BaseController
     {
         return Ok(await Mediator.Send(request));
     }
-    [HttpPost("add")]
+    [HttpPost()]
     public async Task<IActionResult> Add([FromBody] CreateAuthorCommandRequest request)
     {
         return Created("", await Mediator.Send(request));
     }
-    [HttpPut("update")]
+    [HttpPut()]
     public async Task<IActionResult> Update([FromBody] UpdateAuthorCommandRequest request)
     {
         return Ok(await Mediator.Send(request));
     }
-    [HttpDelete("delete")]
+    [HttpDelete("{Id}")]
     public async Task<IActionResult> Delete([FromBody] DeleteAuthorCommandRequest request)
     {
         return Ok(await Mediator.Send(request));

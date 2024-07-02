@@ -25,7 +25,8 @@ public class MappingProfiles : Profile
         CreateMap<Book, DeleteBookCommandResponse>().ReverseMap();
         CreateMap<Book, DeleteBookCommandRequest>().ReverseMap();
 
-        CreateMap<Book, GetByIdBookQueryResponse>().ForMember(r => r.AuthorName, opt => opt.MapFrom(b => b.Author.Name));
+        CreateMap<Book, GetByIdBookQueryResponse>().ReverseMap();
+        //CreateMap<Book, GetByIdBookQueryResponse>().ForMember(r => r.AuthorName, opt => opt.MapFrom(b => b.Author.Name));
         CreateMap<Book, GetListBookQueryResponse>().ForMember(r => r.AuthorName, opt => opt.MapFrom(b => b.Author.Name));
     }
 }

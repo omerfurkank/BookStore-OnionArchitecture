@@ -1,4 +1,5 @@
 ﻿using Application.Features.Books.Queries.GetByIdBook;
+using Application.Pipelines.Auth;
 using Application.Pipelines.Caching;
 using MediatR;
 using System;
@@ -8,12 +9,14 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Application.Features.Books.Queries.GetListBook;
-public class GetListBookQueryRequest : IRequest<IList<GetListBookQueryResponse>>, ICacheableRequest
+public class GetListBookQueryRequest : IRequest<IList<GetListBookQueryResponse>>, ISecuredRequest/*, ICacheableRequest*/
 {
     public int Index { get; set; } = 0;
     public int Size { get; set; } = 10;
 
-    public string CacheKey => "GetListBooks";
+    public string[] Roles => new[] { "user" };
 
-    public double CacheTime => 60;
+    //public string CacheKey => "GetListBooks";
+
+    //public double CacheTime => 60;
 }

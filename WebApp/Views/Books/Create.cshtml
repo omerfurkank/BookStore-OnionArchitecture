@@ -1,0 +1,19 @@
+﻿@model WebApp.Models.Book.CreateBookModel
+
+<div class="container">
+    <form class="w-50 m-5 p-3 shadow mx-auto" asp-action="Create" asp-controller="Books" method="post">
+        <div class="mb-3">
+            <label for="Name" class="form-label">Name:</label>
+            <input type="text" class="form-control" asp-for="Name" />
+        </div>
+        <div class="mb-3">
+            <label for="AuthorId" class="form-label">AuthorId:</label>
+            <input type="text" class="form-control" asp-for="AuthorId" />
+        </div>
+
+        <div class="mb-3">
+            <button class="btn btn-primary w-100">Save</button>
+        </div>
+
+    </form>
+</div>

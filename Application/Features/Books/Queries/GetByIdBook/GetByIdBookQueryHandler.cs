@@ -20,7 +20,7 @@ public class GetByIdBookQueryHandler : IRequestHandler<GetByIdBookQueryRequest, 
         //{
         //    throw new Exception("x");
         //}
-        var book = await _bookRepository.GetAsync(predicate: b => b.Id == request.Id, include: b => b.Include(p => p.Author));
+        var book = await _bookRepository.GetAsync(predicate: b => b.Id == request.Id/*, include: b => b.Include(p => p.Author)*/);
         GetByIdBookQueryResponse response = _mapper.Map<GetByIdBookQueryResponse>(book);
         return response;
     }

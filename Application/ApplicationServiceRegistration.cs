@@ -28,10 +28,7 @@ public static class ApplicationServiceRegistration
 
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
-        services.AddValidatorsFromAssemblyContaining<CreateBookCommandRequestValidator>();
-        services.AddValidatorsFromAssemblyContaining<UpdateBookCommandRequestValidator>();
-
-        services.AddValidatorsFromAssemblyContaining<RegisterCommandRequestValidator>();
+        services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
         services.AddTransient<ExceptionMiddleware>();
 
