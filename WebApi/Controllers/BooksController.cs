@@ -35,7 +35,7 @@ public class BooksController : BaseController
         return Ok(await Mediator.Send(request));
     }
     [HttpDelete("delete")]
-    public async Task<IActionResult> Delete([FromBody] DeleteBookCommandRequest request)
+    public async Task<IActionResult> Delete([FromQuery] DeleteBookCommandRequest request)
     {
         return Ok(await Mediator.Send(request));
     }

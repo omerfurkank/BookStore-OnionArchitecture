@@ -14,7 +14,7 @@ public class AuthController : BaseController
     {
         return Ok(await Mediator.Send(request));
     }
-    [HttpPut("login")]
+    [HttpPost("login")]
     public async Task<IActionResult> Login(LoginCommandRequest request)
     {
         return Ok(await Mediator.Send(request));

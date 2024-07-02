@@ -1,0 +1,19 @@
+﻿@model WebApp.Models.Auth.LoginModel
+
+<div class="container">
+    <form class="w-50 m-5 p-3 shadow mx-auto" asp-action="Login" asp-controller="Auth" method="post">
+        <div class="mb-3">
+            <label for="Email" class="form-label">Username:</label>
+            <input type="text" class="form-control" asp-for="Email" />
+        </div>
+        <div class="mb-3">
+            <label for="Password" class="form-label">Password:</label>
+            <input type="password" class="form-control" asp-for="Password" />
+        </div>
+
+        <div class="mb-3">
+            <button class="btn btn-primary w-100">Login</button>
+        </div>
+
+    </form>
+</div>

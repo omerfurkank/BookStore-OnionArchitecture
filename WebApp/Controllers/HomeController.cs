@@ -1,27 +1,24 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using WebApp.Models;
 
 namespace WebApp.Controllers;
+[Authorize]
 public class HomeController : Controller
 {
-    public HomeController()
-    {
-    }
-
     public IActionResult Index()
     {
         return View();
     }
-
-    public IActionResult Privacy()
+    [Authorize(Roles ="admin")]
+    public string AdminPage()
     {
-        return View();
+        return "admin page";
     }
-
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
+    [Authorize(Roles = "user")]
+    public string UserPage()
     {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        return "user page";
     }
 }
