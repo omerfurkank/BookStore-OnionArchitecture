@@ -19,6 +19,7 @@ public class LogoutCommandHandler : IRequestHandler<LogoutCommandRequest, Logout
 
         user.RefreshToken = null;
         await _userRepository.UpdateUserAsync(user);
+        _userRepository.Logout();
         return new LogoutCommandResponse();
     }
 }

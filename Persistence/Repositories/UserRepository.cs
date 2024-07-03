@@ -14,11 +14,14 @@ namespace Persistence.Repositories;
 public class UserRepository : IUserRepository
 {
     private readonly UserManager<User> _userManager;
+    private readonly SignInManager<User> _signInManager;
 
-    public UserRepository(UserManager<User> userManager)
+    public UserRepository(UserManager<User> userManager, SignInManager<User> signInManager)
     {
         _userManager = userManager;
+        _signInManager = signInManager;
     }
+    public async Task Logout() => await _signInManager.SignOutAsync();
     public async Task<User?> GetUserByEmailAsync(string email) => await _userManager.FindByEmailAsync(email);
     public async Task<User?> GetUserByIdAsync(string id) => await _userManager.FindByIdAsync(id);
     public async Task<IList<User>> GetAllUserAsync() => await _userManager.Users.ToListAsync();

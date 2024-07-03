@@ -1,14 +1,48 @@
 ﻿@model List<WebApp.Models.Book.GetListBookModel>
 
+<link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css" />
 <a class="btn btn-danger btn-sm" asp-action="Create" asp-controller="Books">Create</a>
-<table class="table">
-@foreach(var item in Model)
-{   
+<table id="booksTable" class="display">
+    <thead>
         <tr>
-            <td><a asp-action="GetById" asp-controller="Books" asp-route-id="@item.Id">@item.Name</a></td>
-            <td>@item.AuthorName</td>
-            <td><a class="btn btn-danger btn-sm" asp-action="Delete" asp-controller="Books" asp-route-id="@item.Id">Delete</a></td>
-            <td><a class="btn btn-danger btn-sm" asp-action="Update" asp-controller="Books" asp-route-id="@item.Id">Update</a></td>
+            <th>Name</th>
+            <th>Author Name</th>
+            <th>Actions</th>
         </tr>
-}
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td><a data-toggle="tooltip" data-placement="top" title="id = @item.Id" asp-action="GetById" asp-controller="Books" asp-route-id="@item.Id">@item.Name</a></td>
+                <td>@item.AuthorName</td>
+                <td>
+                    <a class="btn btn-danger btn-sm" asp-action="Delete" asp-controller="Books" asp-route-id="@item.Id">Delete</a>
+                    <a class="btn btn-warning btn-sm" asp-action="Update" asp-controller="Books" asp-route-id="@item.Id">Update</a>
+                </td>
+            </tr>
+        }
+    </tbody>
 </table>
+
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#booksTable').DataTable({
+                "language": {
+                    "url": 'https://cdn.datatables.net/plug-ins/2.0.8/i18n/tr.json',
+                },
+                "paging": true,
+                "pageLength": 10,
+                "lengthMenu": [5, 10, 25, 50, 100]
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            // Tooltip initialization
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
+}

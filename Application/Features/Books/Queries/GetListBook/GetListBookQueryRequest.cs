@@ -12,7 +12,7 @@ namespace Application.Features.Books.Queries.GetListBook;
 public class GetListBookQueryRequest : IRequest<IList<GetListBookQueryResponse>>, ISecuredRequest/*, ICacheableRequest*/
 {
     public int Index { get; set; } = 0;
-    public int Size { get; set; } = 10;
+    public int Size { get; set; } = 100;
 
     public string[] Roles => new[] { "user" };
 

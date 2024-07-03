@@ -24,7 +24,7 @@ public class AuthController : BaseController
     {
         return Ok(await Mediator.Send(request));
     }
-    [HttpPut("logout")]
+    [HttpPost("logout")]
     public async Task<IActionResult> Logout(LogoutCommandRequest request)
     {
         return Ok(await Mediator.Send(request));

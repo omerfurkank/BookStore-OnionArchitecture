@@ -47,7 +47,7 @@ public class BooksController : Controller
         Connect();
         var content = new StringContent(JsonSerializer.Serialize(createBookModel), Encoding.UTF8, "application/json");
         var response = await _client.PostAsync("http://localhost:5298/api/Books/Add", content);
-        return RedirectToAction("GetList");
+        return Json(new { success = true, message = "Kitap başarıyla eklendi!" });
     }
     public async Task<IActionResult> Update(int id)
     {
@@ -63,7 +63,7 @@ public class BooksController : Controller
         Connect();
         var content = new StringContent(JsonSerializer.Serialize(updateBookModel), Encoding.UTF8, "application/json");
         var response = await _client.PutAsync("http://localhost:5298/api/Books/Update",content);
-        return RedirectToAction("GetList");
+        return Json(new { success = true, message = "Kitap başarıyla güncellendi!" });
     }
     public async Task<IActionResult> Delete(int id)
     {

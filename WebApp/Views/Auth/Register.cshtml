@@ -1,0 +1,26 @@
+﻿@model WebApp.Models.Auth.RegisterModel
+
+<div class="container">
+    <form class="w-50 m-5 p-3 shadow mx-auto" asp-action="Register" asp-controller="Auth" method="post">
+        <div class="mb-3">
+            <label for="Name" class="form-label">FullName:</label>
+            <input type="text" class="form-control" asp-for="FullName" />
+        </div>
+        <div class="mb-3">
+            <label for="AuthorId" class="form-label">Email:</label>
+            <input type="email" class="form-control" asp-for="Email" />
+        </div>
+        <div class="mb-3">
+            <label for="AuthorId" class="form-label">Password:</label>
+            <input type="password" class="form-control" asp-for="Password" />
+        </div>
+        <div class="mb-3">
+            <label for="AuthorId" class="form-label">PasswordConfirm:</label>
+            <input type="password" class="form-control" asp-for="PasswordConfirm" />
+        </div>
+
+        <div class="mb-3">
+            <button class="btn btn-primary w-100">Register</button>
+        </div>
+
+    </form>
