@@ -1,6 +1,10 @@
 development continues...
 
-A monolitic architecture project completed with advanced technologies. BookApi project created that includes;
+A monolitic architecture project completed with advanced technologies.
+
+BookApp includes a Web API and an MVC application consumed by Web API.
+
+BookApp backend side created that includes;
 - Clean Architecture
 - CQRS
 - Asynchronous Programming
