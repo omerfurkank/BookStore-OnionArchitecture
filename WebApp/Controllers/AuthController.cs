@@ -18,21 +18,42 @@ public class AuthController : Controller
         _clientFactory = httpClientFactory;
         _client = _clientFactory.CreateClient();
     }
-    private void Connect()
-    {
-        var token = User?.Claims?.FirstOrDefault(x => x.Type == "accessToken")?.Value;
-        _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
-    }
     public IActionResult Login()
     {
         return View(new LoginModel());
     }
+    //[HttpPost]
+    //public async Task<IActionResult> Login(LoginModel userLoginModel)
+    //{
+    //    // Basit bir doğrulama ve token alma işlemi (gerçek uygulamada bu yöntem farklı olabilir)
+
+    //    using var client = new HttpClient();
+    //    var content = new StringContent(JsonSerializer.Serialize(userLoginModel), Encoding.UTF8, "application/json");
+    //    var response = await client.PostAsync("http://localhost:5298/api/Auth/Login", content);
+    //    if (response.IsSuccessStatusCode)
+    //    {
+    //        var jsonData = await response.Content.ReadAsStringAsync();
+    //        var tokenModel = JsonSerializer.Deserialize<LoginResponseModel>(jsonData, new JsonSerializerOptions
+    //        {
+    //            PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+    //        });
+
+    //        JwtSecurityTokenHandler handler = new();
+    //        var token = handler.ReadJwtToken(tokenModel.AccessToken);
+    //        var claims = token.Claims.ToList();
+    //        claims.Add(new Claim("accessToken", tokenModel.AccessToken));
+    //        HttpContext.Response.Cookies.Append("AccessToken", token.ToString());
+    //        return RedirectToAction("Index", "Home");
+    //    }
+
+    //    return RedirectToAction("Login", "Home");
+    //}
     [HttpPost]
     public async Task<IActionResult> Login(LoginModel userLoginModel)
     {
         var client = _clientFactory.CreateClient();
         var content = new StringContent(JsonSerializer.Serialize(userLoginModel), Encoding.UTF8, "application/json");
-        var response = await client.PostAsync("http://localhost:5298/api/Auth/Login", content);   
+        var response = await client.PostAsync("http://localhost:5298/api/Auth/Login", content);
         var jsonData = await response.Content.ReadAsStringAsync();
         var tokenModel = JsonSerializer.Deserialize<LoginResponseModel>(jsonData, new JsonSerializerOptions
         {
@@ -46,7 +67,7 @@ public class AuthController : Controller
         var claimsIdentity = new ClaimsIdentity(claims, JwtBearerDefaults.AuthenticationScheme);
         var authProps = new AuthenticationProperties
         {
-            ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(15),
+            ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(1),
             IsPersistent = true,
         };
         await HttpContext.SignInAsync(JwtBearerDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProps);
@@ -64,17 +85,21 @@ public class AuthController : Controller
         var response = await client.PostAsync("http://localhost:5298/api/Auth/Register", content);
         return RedirectToAction("Index", "Home");
     }
-    [HttpPost]
+
     public async Task<IActionResult> Logout()
     {
-        Connect();
         var client = _clientFactory.CreateClient();
 
-        var data= User.Claims.FirstOrDefault(x=>x.Type==JwtRegisteredClaimNames.Email);
-        var email = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email);
-        var model = new LogoutModel() { Email = User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Email).Value };
+        string email = User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Email).Value;
+        var model = new LogoutModel() { Email = email };
         var content = new StringContent(JsonSerializer.Serialize(model), Encoding.UTF8, "application/json");
         var response = await client.PostAsync("http://localhost:5298/api/Auth/Logout", content);
         return RedirectToAction("Index", "Home");
     }
+    //[HttpPost]
+    //public async Task<IActionResult> Logout()
+    //{
+    //    await HttpContext.SignOutAsync(JwtBearerDefaults.AuthenticationScheme);
+    //    return RedirectToAction("Index", "Home");
+    //}
 }

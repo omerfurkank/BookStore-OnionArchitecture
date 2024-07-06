@@ -1,0 +1,44 @@
+﻿@model int
+
+<div class="container mt-4">
+    <h1>Book Details</h1>
+
+    <div class="mt-4" id="bookDetails">
+        <p><strong>ID:</strong> <span id="authorId"></span></p>
+        <p><strong>Name:</strong> <span id="authorName"></span></p>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(function () {
+            $.ajax({
+                url: baseUrl + 'api/Authors/@Model',
+                type: 'GET',
+                headers: {
+                    'Authorization': 'Bearer @ViewData["Token"]'
+                },
+                success: function (data) {
+                    $('#authorId').text(data.id);
+                    $('#authorName').text(data.name);
+                },
+                error: function (xhr, status, error) {
+                    var errorMessage;
+                    if (xhr.status === 401) {
+                        errorMessage = 'Yetkilendirme hatası! Lütfen giriş yapın.';
+                    } else {
+                        errorMessage = xhr.responseJSON ? xhr.responseJSON.message : 'Yazar eklenirken bir hata oluştu.';
+                    }
+
+                    Swal.fire({
+                        title: 'Error!',
+                        text: errorMessage,
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                }
+            });
+        });
+    </script>
+}
+

@@ -1,0 +1,96 @@
+﻿@model int
+
+<div class="container">
+    <form id="updateAuthorForm" class="w-50 m-5 p-3 shadow mx-auto" method="post">
+        <input type="hidden" name="Id" id="Id" />
+        <div class="mb-3">
+            <label for="Name" class="form-label">Name:</label>
+            <input type="text" class="form-control" name="Name" id="Name" />
+        </div>
+        <div class="mb-3">
+            <button type="button" class="btn btn-primary w-100" id="updateButton">Update</button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        $(function () {
+            // Form doldurma işlemi
+            $.ajax({
+                url: baseUrl + 'api/Authors/@Model',
+                type: 'GET',
+                headers: {
+                    'Authorization': 'Bearer @ViewData["Token"]',
+                    'CustomHeader': 'CustomValue'
+                },
+                success: function (data) {
+                    $('#Id').val(data.id);
+                    $('#Name').val(data.name);
+                },
+                error: function (xhr, status, error) {
+                    var errorMessage;
+                    if (xhr.status === 401) {
+                        errorMessage = 'Yetkilendirme hatası! Lütfen giriş yapın.';
+                    } else {
+                        errorMessage = xhr.responseJSON ? xhr.responseJSON.message : 'bir hata oluştu.';
+                    }
+
+                    Swal.fire({
+                        title: 'Error!',
+                        text: errorMessage,
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                }
+            });
+
+            // Güncelleme işlemi
+            $('#updateButton').click(function () {
+                var formData = {
+                    Id: $('#Id').val(),
+                    Name: $('#Name').val()
+                };
+
+                $.ajax({
+                    url: baseUrl + 'api/Authors/Update',
+                    type: 'PUT',
+                    headers: {
+                        'Authorization': 'Bearer @ViewData["Token"]',
+                        'CustomHeader': 'CustomValue'
+                    },
+                    contentType: 'application/json',
+                    data: JSON.stringify(formData),
+                    success: function (response) {
+                        Swal.fire({
+                            title: 'Success!',
+                            text: 'Yazar başarıyla güncellendi.',
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = '@Url.Action("GetList", "Authors")';
+                            }
+                        });
+                    },
+                    error: function (xhr, status, error) {
+                        var errorMessage;
+                        if (xhr.status === 401) {
+                            errorMessage = 'Yetkilendirme hatası! Lütfen giriş yapın.';
+                        } else {
+                            errorMessage = xhr.responseJSON ? xhr.responseJSON.message : 'Yazar eklenirken bir hata oluştu.';
+                        }
+
+                        Swal.fire({
+                            title: 'Error!',
+                            text: errorMessage,
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+}

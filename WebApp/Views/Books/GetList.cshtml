@@ -14,7 +14,7 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td><a data-toggle="tooltip" data-placement="top" title="id = @item.Id" asp-action="GetById" asp-controller="Books" asp-route-id="@item.Id">@item.Name</a></td>
+                <td><a data-toggle="tooltip" data-placement="top" title="id = @item.Id, name = @item.Name, Author = @item.AuthorName" asp-action="GetById" asp-controller="Books" asp-route-id="@item.Id">@item.Name</a></td>
                 <td>@item.AuthorName</td>
                 <td>
                     <a class="btn btn-danger btn-sm" asp-action="Delete" asp-controller="Books" asp-route-id="@item.Id">Delete</a>
@@ -28,7 +28,7 @@
 
 @section Scripts {
     <script>
-        $(document).ready(function () {
+        $(function () {
             $('#booksTable').DataTable({
                 "language": {
                     "url": 'https://cdn.datatables.net/plug-ins/2.0.8/i18n/tr.json',
@@ -38,9 +38,8 @@
                 "lengthMenu": [5, 10, 25, 50, 100]
             });
         });
-    </script>
-    <script>
-        $(document).ready(function () {
+
+        $(function () {
             // Tooltip initialization
             $('[data-toggle="tooltip"]').tooltip();
         });

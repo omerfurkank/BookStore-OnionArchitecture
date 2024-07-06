@@ -5,7 +5,7 @@ using System.Text.Json;
 using WebApp.Models.Book;
 
 namespace WebApp.Controllers;
-[Authorize(Roles ="admin")]
+[Authorize]
 public class BooksController : Controller
 {
     private readonly IHttpClientFactory _clientFactory;
@@ -68,7 +68,7 @@ public class BooksController : Controller
     public async Task<IActionResult> Delete(int id)
     {
         Auth();
-        var response = await _client.DeleteAsync("http://localhost:5298/api/Books/Delete?id=" + id);
+        var response = await _client.DeleteAsync($"http://localhost:5298/api/Books/{id}");
         return RedirectToAction("GetList");
     }
 }
