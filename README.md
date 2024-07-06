@@ -10,8 +10,12 @@ BookApp backend side created that includes;
 - Asynchronous Programming
 - JWT
 - Role Based Management
-- Logging with Serilog
-- Caching with Redis
 - Global Exception Handling
 - Pipeline Behaviors with Mediatr
+- Logging with Serilog
+- Caching with Redis
+- Mapping with AutoMapper
+- Validation with FluentValidation
+
+
   and much more...
