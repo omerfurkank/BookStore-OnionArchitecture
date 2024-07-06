@@ -24,7 +24,7 @@ public class AuthorizationBehavior<TRequest, TResponse> : IPipelineBehavior<TReq
     {
         List<string>? userRoles = _httpContextAccessor.HttpContext?.User.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
 
-        if (userRoles == null)
+        if (userRoles.IsNullOrEmpty())
             throw new AuthorizationException("You are not authenticated.");
 
         bool isNotMatchedAUserRolesWithRequestRoles = userRoles
