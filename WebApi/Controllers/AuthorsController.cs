@@ -13,26 +13,31 @@ public class AuthorsController : BaseController
     [HttpGet("getList")]
     public async Task<IActionResult> GetList([FromQuery] GetListAuthorQueryRequest request)
     {
-        return Ok(await Mediator.Send(request));
+        var response = await Mediator.Send(request);
+        return Ok(response);
     }
     [HttpGet("{Id}")]
     public async Task<IActionResult> GetById([FromRoute] GetByIdAuthorQueryRequest request)
     {
-        return Ok(await Mediator.Send(request));
+        var response = await Mediator.Send(request);
+        return Ok(response);
     }
     [HttpPost("add")]
     public async Task<IActionResult> Add([FromBody] CreateAuthorCommandRequest request)
     {
-        return Created("", await Mediator.Send(request));
+        var response = await Mediator.Send(request);
+        return Created("", response);
     }
     [HttpPut("update")]
     public async Task<IActionResult> Update([FromBody] UpdateAuthorCommandRequest request)
     {
-        return Ok(await Mediator.Send(request));
+        var response = await Mediator.Send(request);
+        return Ok(response);
     }
     [HttpDelete("{Id}")]
     public async Task<IActionResult> Delete([FromRoute] DeleteAuthorCommandRequest request)
     {
-        return Ok(await Mediator.Send(request));
+        var response = await Mediator.Send(request);
+        return Ok(response);
     }
 }

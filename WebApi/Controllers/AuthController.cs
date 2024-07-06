@@ -2,6 +2,9 @@
 using Application.Features.Auth.Commands.Logout;
 using Application.Features.Auth.Commands.RefreshToken;
 using Application.Features.Auth.Commands.Register;
+using Azure.Core;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers;
@@ -12,22 +15,27 @@ public class AuthController : BaseController
     [HttpPost("register")]
     public async Task<IActionResult> Register(RegisterCommandRequest request)
     {
-        return Ok(await Mediator.Send(request));
+        var response = await Mediator.Send(request);
+        return Ok(response);
     }
     [HttpPost("login")]
     public async Task<IActionResult> Login(LoginCommandRequest request)
     {
-        return Ok(await Mediator.Send(request));
+        var response = await Mediator.Send(request);
+        return Ok(response);
     }
     [HttpPut("refreshTokenLogin")]
     public async Task<IActionResult> RefreshTokenLogin(RefreshTokenCommandRequest request)
     {
-        return Ok(await Mediator.Send(request));
+        var response = await Mediator.Send(request);
+        return Ok(response);
     }
     [HttpPost("logout")]
     public async Task<IActionResult> Logout(LogoutCommandRequest request)
     {
-        return Ok(await Mediator.Send(request));
+        var response = Mediator.Send(request);
+        //await HttpContext.SignOutAsync(JwtBearerDefaults.AuthenticationScheme);
+        return Ok(response);
     }
     [HttpPut("logoutAll")]
     public async Task<IActionResult> LogoutAll()

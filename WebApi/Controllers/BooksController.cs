@@ -17,26 +17,31 @@ public class BooksController : BaseController
     [HttpGet("getList")]
     public async Task<IActionResult> GetList([FromQuery] GetListBookQueryRequest request)
     {
-        return Ok(await Mediator.Send(request));
+        var response = await Mediator.Send(request);
+        return Ok(response);
     }
     [HttpGet("{Id}",Name = "getBookById")]
     public async Task<IActionResult> GetById([FromRoute] GetByIdBookQueryRequest request)
     {
-        return Ok(await Mediator.Send(request));
+        var response = await Mediator.Send(request);
+        return Ok(response);
     }
     [HttpPost("add")]
     public async Task<IActionResult> Add([FromBody] CreateBookCommandRequest request)
     {
-        return Created("", await Mediator.Send(request));
+        var response = await Mediator.Send(request);
+        return Created("", response);
     }
     [HttpPut("update")]
     public async Task<IActionResult> Update([FromBody] UpdateBookCommandRequest request)
     {
-        return Ok(await Mediator.Send(request));
+        var response = await Mediator.Send(request);
+        return Ok(response);
     }
     [HttpDelete("{Id}", Name = "deleteBook")]
     public async Task<IActionResult> Delete([FromRoute] DeleteBookCommandRequest request)
     {
-        return Ok(await Mediator.Send(request));
+        var response = await Mediator.Send(request);
+        return Ok(response);
     }
 }
