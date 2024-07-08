@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Text;
 using System.Text.Json;
@@ -10,10 +11,12 @@ public class BooksController : Controller
 {
     private readonly IHttpClientFactory _clientFactory;
     private readonly HttpClient _client;
-    public BooksController(IHttpClientFactory clientFactory, HttpClient client)
+    private readonly IValidator<CreateBookModel> _validator;
+    public BooksController(IHttpClientFactory clientFactory, HttpClient client, IValidator<CreateBookModel> validator)
     {
         _clientFactory = clientFactory;
         _client = _clientFactory.CreateClient();
+        _validator = validator;
     }
     private void Auth()
     {
@@ -44,6 +47,7 @@ public class BooksController : Controller
     [HttpPost]
     public async Task<IActionResult> Create(CreateBookModel createBookModel)
     {
+        _validator.Validate(createBookModel);
         Auth();
         var content = new StringContent(JsonSerializer.Serialize(createBookModel), Encoding.UTF8, "application/json");
         var response = await _client.PostAsync("http://localhost:5298/api/Books/Add", content);

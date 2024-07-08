@@ -5,7 +5,6 @@ namespace Application.Repositories;
 
 public interface IUserRepository
 {
-    public Task Logout();
     public Task<User?> GetUserByEmailAsync(string email);
     public Task<User?> GetUserByIdAsync(string id);
     public Task<IList<string>> GetUserRolesAsync(User user);

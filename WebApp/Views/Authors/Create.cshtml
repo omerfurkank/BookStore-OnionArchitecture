@@ -1,10 +1,13 @@
 ﻿@model WebApp.Models.Author.CreateAuthorModel
 
+@{
+    Layout = "_ModalLayout";
+}
 <div class="container">
     <form id="createAuthorForm" class="w-50 m-5 p-3 shadow mx-auto" method="post">
         <div class="mb-3">
             <label for="Name" class="form-label">Name:</label>
-            <input type="text" class="form-control" name="Name" id="Name" asp-for="Name" />
+            <input type="text" class="form-control" id="Name" asp-for="Name" />
         </div>
         <div class="mb-3">
             <button type="button" class="btn btn-primary w-100" id="saveButton">Save</button>

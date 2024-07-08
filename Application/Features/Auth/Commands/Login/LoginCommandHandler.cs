@@ -53,7 +53,8 @@ public class LoginCommandHandler : IRequestHandler<LoginCommandRequest, LoginCom
         {
             AccessToken = _token,
             RefreshToken = refreshToken,
-            AccessTokenExpiredTime = token.ValidTo
+            AccessTokenExpiredTime = token.ValidTo,
+            RefreshTokenExpiredTime = user.RefreshTokenExpiredTime
         };
 
     }

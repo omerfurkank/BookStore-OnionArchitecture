@@ -55,22 +55,16 @@ public class AuthController : Controller
         var content = new StringContent(JsonSerializer.Serialize(userLoginModel), Encoding.UTF8, "application/json");
         var response = await client.PostAsync("http://localhost:5298/api/Auth/Login", content);
         var jsonData = await response.Content.ReadAsStringAsync();
-        var tokenModel = JsonSerializer.Deserialize<LoginResponseModel>(jsonData, new JsonSerializerOptions
-        {
-            PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-        });
+        var tokenModel = JsonSerializer.Deserialize<LoginResponseModel>(jsonData, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase});
 
         JwtSecurityTokenHandler handler = new();
         var token = handler.ReadJwtToken(tokenModel.AccessToken);
         var claims = token.Claims.ToList();
         claims.Add(new Claim("accessToken", tokenModel.AccessToken));
+        claims.Add(new Claim("refreshTokenExpire", tokenModel.RefreshTokenExpiredTime.ToString()));
         var claimsIdentity = new ClaimsIdentity(claims, JwtBearerDefaults.AuthenticationScheme);
-        var authProps = new AuthenticationProperties
-        {
-            ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(1),
-            IsPersistent = true,
-        };
-        await HttpContext.SignInAsync(JwtBearerDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProps);
+
+        await HttpContext.SignInAsync(JwtBearerDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
         return RedirectToAction("Index", "Home");
     }
     public IActionResult Register()
@@ -85,21 +79,15 @@ public class AuthController : Controller
         var response = await client.PostAsync("http://localhost:5298/api/Auth/Register", content);
         return RedirectToAction("Index", "Home");
     }
-
     public async Task<IActionResult> Logout()
     {
         var client = _clientFactory.CreateClient();
-
         string email = User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Email).Value;
         var model = new LogoutModel() { Email = email };
         var content = new StringContent(JsonSerializer.Serialize(model), Encoding.UTF8, "application/json");
         var response = await client.PostAsync("http://localhost:5298/api/Auth/Logout", content);
+
+        await HttpContext.SignOutAsync(JwtBearerDefaults.AuthenticationScheme);
         return RedirectToAction("Index", "Home");
     }
-    //[HttpPost]
-    //public async Task<IActionResult> Logout()
-    //{
-    //    await HttpContext.SignOutAsync(JwtBearerDefaults.AuthenticationScheme);
-    //    return RedirectToAction("Index", "Home");
-    //}
 }

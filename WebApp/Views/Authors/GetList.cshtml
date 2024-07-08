@@ -1,86 +1,111 @@
-﻿<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Book List</title>
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css" />
-</head>
-<body>
-    <a class="btn btn-danger btn-sm" asp-action="Create" asp-controller="Authors">Create</a>
-    <table id="booksTable" class="display">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-    </table>
+﻿
 
-    @section Scripts {
-        <script>
-            $(function () {
-                $('#booksTable').DataTable({
-                    "language": {
-                        "url": 'https://cdn.datatables.net/plug-ins/2.0.8/i18n/tr.json',
-                    },
-                    "paging": true,
-                    "pageLength": 10,
-                    "lengthMenu": [5, 10, 25, 50, 100],
-                    "columns": [
-                        { "data": "id" },
-                        {
-                            "data": "name",
-                            "render": function (data, type, row) {
-                                return `<a href="/Authors/GetById/${row.id}" data-toggle="tooltip" title="ID: ${row.id}, Name: ${data}">${data}</a>`;
-                            }
-                        },
-                        {
-                            "data": null,
-                            "render": function (data, type, row) {
-                                return ` <a class="btn btn-danger btn-sm" href="/Authors/Delete/${row.id}">Delete</a>
-                                         <a class="btn btn-warning btn-sm" href="/Authors/Update/${row.id}">Update</a>`;
-                            }
-                        }
-                    ],
-                    "ajax": {
-                        "url": baseUrl + 'api/Authors/GetList',
-                        "type": "GET",
-                        "headers": {
-                            'Authorization': 'Bearer @ViewData["Token"]'
-                        },
-                        "dataType": "json",
-                        "dataSrc": "",
-                        "error": function (xhr, status, error) {
-                            if (xhr.status === 401) {
-                                Swal.fire({
-                                    title: 'Yetkisiz Erişim!',
-                                    text: 'Bu işlemi gerçekleştirmek için giriş yapmalısınız.',
-                                    icon: 'warning',
-                                    confirmButtonText: 'Anladım'
-                                }).then(() => {
-                                    window.location.href = '/Auth/Login'; // Kullanıcıyı giriş sayfasına yönlendir
-                                });
-                            } else {
-                                Swal.fire({
-                                    title: 'Hata!',
-                                    text: 'Bir hata oluştu. Lütfen tekrar deneyin.',
-                                    icon: 'error',
-                                    confirmButtonText: 'Tamam'
-                                });
-                            }
+<link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css" />
+
+
+<a class="btn btn-danger btn-sm" id="openCreateModal">Create</a>
+
+<table id="authorTable" class="display">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+</table>
+
+@section Scripts {
+    <script>
+        $(function () {
+            $('#authorTable').DataTable({
+                "language": {
+                    "url": 'https://cdn.datatables.net/plug-ins/2.0.8/i18n/tr.json',
+                },
+                "paging": true,
+                "pageLength": 10,
+                "lengthMenu": [5, 10, 25, 50, 100],
+                "columns": [
+                    { "data": "id" },
+                    {
+                        "data": "name",
+                        "render": function (data, type, row) {
+                            return `<a href="/Authors/GetById/${row.id}" data-toggle="tooltip" title="ID: ${row.id}, Name: ${data}">${data}</a>`;
                         }
                     },
-                    "filter": true
-                });
-
-                // Tooltip initialization
-                $(function () {
-                    $('[data-toggle="tooltip"]').tooltip();
-                });
+                    {
+                        "data": null,
+                        "render": function (data, type, row) {
+                            return ` <a class="btn btn-danger btn-sm" href="/Authors/Delete/${row.id}">Delete</a>
+                                                 <a class="btn btn-warning btn-sm" href="/Authors/Update/${row.id}">Update</a>`;
+                        }
+                    }
+                ],
+                "ajax": {
+                    "url": baseUrl + 'api/Authors/GetList',
+                    "type": "GET",
+                    "headers": {
+                        'Authorization': 'Bearer @ViewData["Token"]'
+                    },
+                    "dataType": "json",
+                    "dataSrc": "",
+                    "error": function (xhr, status, error) {
+                        if (xhr.status === 401) {
+                            Swal.fire({
+                                title: 'Yetkisiz Erişim!',
+                                text: 'Bu işlemi gerçekleştirmek için giriş yapmalısınız.',
+                                icon: 'warning',
+                                confirmButtonText: 'Anladım'
+                            }).then(() => {
+                                window.location.href = '/Auth/Login'; // Kullanıcıyı giriş sayfasına yönlendir
+                            });
+                        } else {
+                            Swal.fire({
+                                title: 'Hata!',
+                                text: 'Bir hata oluştu. Lütfen tekrar deneyin.',
+                                icon: 'error',
+                                confirmButtonText: 'Tamam'
+                            });
+                        }
+                    }
+                },
+                "filter": true
             });
-        </script>
-    }
-</body>
-</html>
+
+            // Tooltip initialization
+            $(function () {
+                $('[data-toggle="tooltip"]').tooltip();
+            });
+
+            $('#openCreateModal').click(function () {
+                $.get('@Url.Action("Create", "Authors")')
+                    .done(function (data) {
+                        $('#modalContent').html(data);
+                        $('#createAuthorModal').modal('show');
+                    })
+                    .fail(function () {
+                        Swal.fire({
+                            title: 'Hata!',
+                            text: 'Yazar oluşturma sayfası yüklenirken bir hata oluştu.',
+                            icon: 'error',
+                            confirmButtonText: 'Tamam'
+                        });
+                    });
+            });
+        });
+    </script>
+}
+
+<div class="modal fade" id="createAuthorModal" tabindex="-1" aria-labelledby="createAuthorModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createAuthorModalLabel">Create Author</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="modalContent">
+                <!-- Modal içeriği AJAX ile doldurulacak -->
+            </div>
+        </div>
+    </div>
+</div>

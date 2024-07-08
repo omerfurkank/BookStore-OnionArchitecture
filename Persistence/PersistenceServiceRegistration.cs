@@ -19,10 +19,7 @@ public static class PersistenceServiceRegistration
     public static IServiceCollection AddPersistenceServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddDbContext<BookDbContext>(options =>options.UseNpgsql(configuration.GetConnectionString("BookConnectionString")));
-        services.AddIdentity<User, Role>()
-       .AddEntityFrameworkStores<BookDbContext>()
-       .AddDefaultTokenProviders();
-
+        services.AddIdentityCore<User>().AddRoles<Role>().AddEntityFrameworkStores<BookDbContext>();
 
         services.AddScoped<IAuthorRepository, AuthorRepository>();
         services.AddScoped<IBookRepository, BookRepository>();
