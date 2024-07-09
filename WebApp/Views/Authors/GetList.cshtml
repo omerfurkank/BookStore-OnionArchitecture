@@ -1,7 +1,4 @@
-﻿
-
-<link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css" />
-
+﻿<link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css" />
 
 <a class="btn btn-danger btn-sm" id="openCreateModal">Create</a>
 
@@ -37,7 +34,7 @@
                         "data": null,
                         "render": function (data, type, row) {
                             return ` <a class="btn btn-danger btn-sm" href="/Authors/Delete/${row.id}">Delete</a>
-                                                 <a class="btn btn-warning btn-sm" href="/Authors/Update/${row.id}">Update</a>`;
+                                     <a class="btn btn-warning btn-sm openUpdateModal" data-id="${row.id}">Update</a>`;
                         }
                     }
                 ],
@@ -92,6 +89,23 @@
                         });
                     });
             });
+
+            $(document).on('click', '.openUpdateModal', function () {
+                var authorId = $(this).data('id');
+                $.get('@Url.Action("Update", "Authors")', { id: authorId })
+                    .done(function (data) {
+                        $('#modalContentUpdate').html(data);
+                        $('#updateAuthorModal').modal('show');
+                    })
+                    .fail(function () {
+                        Swal.fire({
+                            title: 'Hata!',
+                            text: 'Yazar güncelleme sayfası yüklenirken bir hata oluştu.',
+                            icon: 'error',
+                            confirmButtonText: 'Tamam'
+                        });
+                    });
+            });
         });
     </script>
 }
@@ -104,6 +118,20 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body" id="modalContent">
+                <!-- Modal içeriği AJAX ile doldurulacak -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="updateAuthorModal" tabindex="-1" aria-labelledby="updateAuthorModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateAuthorModalLabel">Update Author</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="modalContentUpdate">
                 <!-- Modal içeriği AJAX ile doldurulacak -->
             </div>
         </div>

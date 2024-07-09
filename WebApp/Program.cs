@@ -33,7 +33,7 @@ app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseMiddleware<JwtMiddleware>();
+app.UseMiddleware<RefreshTokenMiddleware>();
 
 app.MapControllerRoute(
     name: "default",

@@ -4,6 +4,7 @@ using Domain.Entities.Identity;
 using Infrastructure.Tokens;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Newtonsoft.Json.Linq;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
@@ -32,15 +33,16 @@ public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommandReq
         await _authBusinessRules.CheckRefreshTokenExpiredDate(user.RefreshTokenExpiredTime);
 
         JwtSecurityToken newAccessToken = await _tokenService.CreateToken(user, roles);
-        string newRefreshToken = _tokenService.GenerateRefreshToken();
+        //string newRefreshToken = _tokenService.GenerateRefreshToken();
 
-        user.RefreshToken = newRefreshToken;
-        await _userRepository.UpdateUserAsync(user);
-
+        //user.RefreshToken = newRefreshToken;
+        //await _userRepository.UpdateUserAsync(user);
+        string _token = new JwtSecurityTokenHandler().WriteToken(newAccessToken);
+        await _userRepository.SetAccessTokenAsync(user, _token);
         return new()
         {
-            AccessToken = new JwtSecurityTokenHandler().WriteToken(newAccessToken),
-            RefreshToken = newRefreshToken,
+            AccessToken = _token
+            //RefreshToken = newRefreshToken,
         };
     }
 }

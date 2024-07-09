@@ -24,7 +24,7 @@ public class AuthController : BaseController
         var response = await Mediator.Send(request);
         return Ok(response);
     }
-    [HttpPut("refreshTokenLogin")]
+    [HttpPost("refreshTokenLogin")]
     public async Task<IActionResult> RefreshTokenLogin(RefreshTokenCommandRequest request)
     {
         var response = await Mediator.Send(request);
