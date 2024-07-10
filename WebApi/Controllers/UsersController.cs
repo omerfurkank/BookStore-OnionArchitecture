@@ -9,7 +9,8 @@ public class UsersController : BaseController
 {
     [HttpPost("addRolesToUser")]
     public async Task<IActionResult> Add([FromBody] AssignRoleToUserCommandRequest request)
-    { var response = await Mediator.Send(request);
+    {
+        var response = await Mediator.Send(request);
         return Created("", response);
     }
     [HttpGet("getList")]

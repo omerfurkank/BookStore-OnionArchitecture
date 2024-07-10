@@ -10,6 +10,6 @@ using System.Threading.Tasks;
 namespace Application.Features.Roles.Commands.CreateRole;
 public class CreateRoleCommandRequest : IRequest<CreateRoleCommandResponse>, ISecuredRequest
 {
-    public string Name { get; set; }
+    public string? Name { get; set; }
     public string[] Roles => new[] {"admin"};
 }

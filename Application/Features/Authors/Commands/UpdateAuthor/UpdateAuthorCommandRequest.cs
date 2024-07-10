@@ -9,5 +9,5 @@ namespace Application.Features.Authors.Commands.UpdateAuthor;
 public class UpdateAuthorCommandRequest : IRequest<UpdateAuthorCommandResponse>
 {
     public int Id { get; set; }
-    public string Name { get; set; }
+    public string? Name { get; set; }
 }

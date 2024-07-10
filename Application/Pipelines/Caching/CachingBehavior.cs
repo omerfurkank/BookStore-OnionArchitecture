@@ -31,8 +31,5 @@ public class CachingBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, 
                 await _cacheService.SetAsync(cacheKey, response, DateTime.Now.AddMinutes(cacheTime));
 
             return response;
-
-
-        return await next();
     }
 }

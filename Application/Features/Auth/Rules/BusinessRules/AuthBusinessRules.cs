@@ -34,13 +34,12 @@ public class AuthBusinessRules
     }
     public async Task CheckPasswordToLogin(User user, string password)
     {
-        var loginUser = await _userManager.FindByEmailAsync(user.Email);
-        bool result = await _userManager.CheckPasswordAsync(loginUser, password);
+        bool result = await _userManager.CheckPasswordAsync(user, password);
 
         if (!result) { throw new BusinessException("AuthMessages.PasswordDoesNotMach"); }
     }
-    public async Task CheckRefreshTokenExpiredDate(DateTime? expiredDate)
+    public void CheckRefreshTokenExpiredDate(DateTime? expiredDate)
     {
-        if (expiredDate <= DateTime.Now) throw new BusinessException(); 
+        if (expiredDate <= DateTime.Now) throw new BusinessException("AuthMessages.RefreshTokenisExpired");
     }
 }

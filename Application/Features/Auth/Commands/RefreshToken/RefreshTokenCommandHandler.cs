@@ -30,7 +30,7 @@ public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommandReq
         User? user = await _userRepository.GetUserByEmailAsync(email);
         IList<string> roles = await _userRepository.GetUserRolesAsync(user);
 
-        await _authBusinessRules.CheckRefreshTokenExpiredDate(user.RefreshTokenExpiredTime);
+        _authBusinessRules.CheckRefreshTokenExpiredDate(user.RefreshTokenExpiredTime);
 
         JwtSecurityToken newAccessToken = await _tokenService.CreateToken(user, roles);
         //string newRefreshToken = _tokenService.GenerateRefreshToken();

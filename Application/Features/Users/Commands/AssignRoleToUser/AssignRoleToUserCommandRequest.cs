@@ -10,6 +10,6 @@ namespace Application.Features.Users.Commands.AssignRoleToUser;
 public class AssignRoleToUserCommandRequest : IRequest<AssignRoleToUserCommandResponse>, ISecuredRequest
 {
     public int UserId { get; set; }
-    public string[] RolesToBeAdded { get; set; }
+    public string[]? RolesToBeAdded { get; set; }
     public string[] Roles => new[] { "admin" };
 }

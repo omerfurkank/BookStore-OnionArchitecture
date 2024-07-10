@@ -18,13 +18,11 @@ public class RoleRepository : IRoleRepository
     public async Task<IdentityResult> CreateRole(string name)
     {
         IdentityResult result = await _roleManager.CreateAsync(new() {Name = name });
-
-        return result;
-        
+        return result;      
     }
     public async Task<bool> DeleteRole(int id)
     {
-        Role role = await _roleManager.FindByIdAsync(id.ToString());
+        Role? role = await _roleManager.FindByIdAsync(id.ToString());
         IdentityResult result = await _roleManager.DeleteAsync(role);
         return result.Succeeded;
     }

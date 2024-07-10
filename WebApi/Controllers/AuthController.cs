@@ -33,13 +33,14 @@ public class AuthController : BaseController
     [HttpPost("logout")]
     public async Task<IActionResult> Logout(LogoutCommandRequest request)
     {
-        var response = Mediator.Send(request);
+        var response = await Mediator.Send(request);
         //await HttpContext.SignOutAsync(JwtBearerDefaults.AuthenticationScheme);
         return Ok(response);
     }
     [HttpPut("logoutAll")]
     public async Task<IActionResult> LogoutAll()
     {
-        return Ok(await Mediator.Send(new LogoutCommandRequest()));
+        var response = await Mediator.Send(new LogoutCommandRequest());
+        return Ok(response);
     }
 }
