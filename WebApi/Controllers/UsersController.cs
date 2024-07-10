@@ -1,6 +1,5 @@
 ﻿using Application.Features.Users.Commands.AssignRoleToUser;
-using MediatR;
-using Microsoft.AspNetCore.Http;
+using Application.Features.Users.Queries.GetListUser;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers;
@@ -10,7 +9,13 @@ public class UsersController : BaseController
 {
     [HttpPost("addRolesToUser")]
     public async Task<IActionResult> Add([FromBody] AssignRoleToUserCommandRequest request)
+    { var response = await Mediator.Send(request);
+        return Created("", response);
+    }
+    [HttpGet("getList")]
+    public async Task<IActionResult> GetList([FromQuery] GetListUserQueryRequest request)
     {
-        return Created("", await Mediator.Send(request));
+        var response = await Mediator.Send(request);
+        return Ok(response);
     }
 }

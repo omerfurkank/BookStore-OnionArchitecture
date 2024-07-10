@@ -17,7 +17,7 @@ public class AuthorsController : Controller
         ViewData["Token"] = _httpContextAccessor.HttpContext?.User?.Claims?.FirstOrDefault(x => x.Type == "accessToken")?.Value;
         base.OnActionExecuting(context);
     }
-    public IActionResult GetList()
+    public async Task<IActionResult> GetList()
     { 
         return View();
     }
