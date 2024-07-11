@@ -22,4 +22,9 @@
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Features\Users\Commands\DeleteUser\" />
+    <Folder Include="Features\Users\Commands\UpdateUser\" />
+  </ItemGroup>
+
 </Project>

@@ -135,7 +135,7 @@ public class RefreshTokenMiddleware
         }
         else
         {
-            if (!context.Request.Path.Value.StartsWith("/Auth"))
+            if (!context.Request.Path.Value.StartsWith("/Auth/Login"))
             {
                 context.Response.Redirect("/Auth/Login");
                 return;

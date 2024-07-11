@@ -1,0 +1,130 @@
+﻿@{
+    Layout = "_ModalLayout";
+}
+
+@model int
+
+<div class="container">
+    <form id="updateUserForm" class="w-50 m-5 p-3 shadow mx-auto" method="post">
+        <input type="hidden" name="Id" id="Id" />
+        <div class="mb-3">
+            <label for="FullName" class="form-label">Name:</label>
+            <input type="text" class="form-control" name="FullName" id="FullName" />
+        </div>
+        <div class="mb-3">
+            <label for="Email" class="form-label">Email:</label>
+            <input type="text" class="form-control" name="Email" id="Email" />
+        </div>
+        <div class="mb-3">
+            <label for="Roles" class="form-label">Roles:</label>
+            <div id="rolesContainer">
+                <!-- Roller burada checkbox olarak eklenecek -->
+            </div>
+        </div>
+        <div class="mb-3">
+            <button type="button" class="btn btn-primary w-100" id="updateButton">Update</button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        $(function () {
+            // Form doldurma işlemi
+            $.ajax({
+                url: baseUrl + 'api/Users/@Model',
+                type: 'GET',
+                headers: {
+                    'Authorization': 'Bearer @ViewData["Token"]'
+                },
+                success: function (data) {
+                    $('#Id').val(data.id);
+                    $('#FullName').val(data.fullName);
+                    $('#Email').val(data.email);
+
+                    // Rolleri yükleme
+                    var rolesContainer = $('#rolesContainer');
+                    rolesContainer.empty(); // Önceki içerikleri temizle
+
+                    data.allRoles.forEach(function (role) {
+                        var isChecked = data.roles.includes(role);
+                        var checkbox = `
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" name="Roles" id="Role_${role}" value="${role}" ${isChecked ? 'checked' : ''} />
+                                        <label class="form-check-label" for="Role_${role}">${role}</label>
+                                    </div>
+                                `;
+                        rolesContainer.append(checkbox);
+                    });
+                },
+                error: function (xhr, status, error) {
+                    var errorMessage;
+                    if (xhr.status === 401) {
+                        errorMessage = 'Yetkilendirme hatası! Lütfen giriş yapın.';
+                    } else {
+                        errorMessage = xhr.responseJSON ? xhr.responseJSON.message : 'Bir hata oluştu.';
+                    }
+
+                    Swal.fire({
+                        title: 'Error!',
+                        text: errorMessage,
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                }
+            });
+
+            // Güncelleme işlemi
+            $('#updateButton').click(function () {
+                var formData = {
+                    Id: $('#Id').val(),
+                    FullName: $('#FullName').val(),
+                    Email: $('#Email').val(),
+                    Roles: []
+                };
+
+                $('#rolesContainer input[name="Roles"]:checked').each(function () {
+                    formData.Roles.push($(this).val());
+                });
+
+                $.ajax({
+                    url: baseUrl + 'api/Users/UpdateUserWithRoles',
+                    type: 'PUT',
+                    headers: {
+                        'Authorization': 'Bearer @ViewData["Token"]'
+                    },
+                    contentType: 'application/json',
+                    data: JSON.stringify(formData),
+                    success: function (response) {
+                        Swal.fire({
+                            title: 'Success!',
+                            text: 'Kullanıcı başarıyla güncellendi.',
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = '@Url.Action("GetList", "Users")';
+                            }
+                        });
+                    },
+                    error: function (xhr, status, error) {
+                        var errorMessage;
+                        if (xhr.status === 401) {
+                            errorMessage = 'Yetkilendirme hatası! Lütfen giriş yapın.';
+                        } else {
+                            errorMessage = xhr.responseJSON ? xhr.responseJSON.message : 'Kullanıcı güncellenirken bir hata oluştu.';
+                        }
+
+                        Swal.fire({
+                            title: 'Error!',
+                            text: errorMessage,
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+}

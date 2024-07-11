@@ -26,20 +26,24 @@ public class RoleRepository : IRoleRepository
         IdentityResult result = await _roleManager.DeleteAsync(role);
         return result.Succeeded;
     }
-
-    public (object, int) GetAllRoles(int index, int size)
+    public IList<string> GetList()
     {
-        var query = _roleManager.Roles;
-
-        IQueryable<Role> rolesQuery = null;
-
-        if (index != -1 && size != -1)
-            rolesQuery = query.Skip(index * size).Take(size);
-        else
-            rolesQuery = query;
-
-        return (rolesQuery.Select(r => new { r.Id, r.Name }), query.Count());
+        IList<string>? response = _roleManager.Roles.Select(r => r.Name).ToList();
+        return response;
     }
+    //public (object, int) GetAllRoles(int index, int size)
+    //{
+    //    var query = _roleManager.Roles;
+
+    //    IQueryable<Role> rolesQuery = null;
+
+    //    if (index != -1 && size != -1)
+    //        rolesQuery = query.Skip(index * size).Take(size);
+    //    else
+    //        rolesQuery = query;
+
+    //    return (rolesQuery.Select(r => new { r.Id, r.Name }), query.Count());
+    //}
 
     public async Task<(int id, string name)> GetByIdRole(int id)
     {

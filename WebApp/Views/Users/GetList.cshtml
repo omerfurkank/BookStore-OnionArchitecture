@@ -12,6 +12,20 @@
     </thead>
 </table>
 
+<div class="modal fade" id="updateUserModal" tabindex="-1" aria-labelledby="updateUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateUserModalLabel">Update User</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="updateUserModalBody">
+                <!-- Modal içeriği AJAX ile doldurulacak -->
+            </div>
+        </div>
+    </div>
+</div>
+
 @section Scripts {
     <script>
         $(function () {
@@ -75,8 +89,22 @@
             $(function () {
                 $('[data-toggle="tooltip"]').tooltip();
             });
-
-
+            $('#usersTable').on('click', '.openUpdateModal', function () {
+                var userId = $(this).data('id');
+                $.get('@Url.Action("UpdateUserWithRoles", "Users")', { id: userId })
+                    .done(function (data) {
+                        $('#updateUserModalBody').html(data);
+                        $('#updateUserModal').modal('show');
+                    })
+                    .fail(function () {
+                        Swal.fire({
+                            title: 'Hata!',
+                            text: 'Kullanıcı güncelleme sayfası yüklenirken bir hata oluştu.',
+                            icon: 'error',
+                            confirmButtonText: 'Tamam'
+                        });
+                    });
+            });
         });
     </script>
 }
