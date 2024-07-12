@@ -1,47 +1,116 @@
-﻿@model List<WebApp.Models.Book.GetListBookModel>
+﻿<link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css" />
 
-<link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css" />
-<a class="btn btn-danger btn-sm" asp-action="Create" asp-controller="Books">Create</a>
-<table id="booksTable" class="display">
+<a class="btn btn-danger btn-sm" id="openCreateModal">Create</a>
+
+<table id="bookTable" class="display">
     <thead>
         <tr>
+            <th>Id</th>
             <th>Name</th>
             <th>Author Name</th>
             <th>Actions</th>
         </tr>
     </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td><a data-toggle="tooltip" data-placement="top" title="id = @item.Id, name = @item.Name, Author = @item.AuthorName" asp-action="GetById" asp-controller="Books" asp-route-id="@item.Id">@item.Name</a></td>
-                <td>@item.AuthorName</td>
-                <td>
-                    <a class="btn btn-danger btn-sm" asp-action="Delete" asp-controller="Books" asp-route-id="@item.Id">Delete</a>
-                    <a class="btn btn-warning btn-sm" asp-action="Update" asp-controller="Books" asp-route-id="@item.Id">Update</a>
-                </td>
-            </tr>
-        }
-    </tbody>
 </table>
 
+<div class="modal fade" id="createBookModal" tabindex="-1" aria-labelledby="createBookModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createBookModalLabel">Create Book</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="modalContent">
+                <!-- Modal içeriği AJAX ile doldurulacak -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="updateBookModal" tabindex="-1" aria-labelledby="updateBookModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateBookModalLabel">Update Book</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="modalContentUpdate">
+                <!-- Modal içeriği AJAX ile doldurulacak -->
+            </div>
+        </div>
+    </div>
+</div>
 
 @section Scripts {
     <script>
         $(function () {
-            $('#booksTable').DataTable({
+            $('#bookTable').DataTable({
                 "language": {
                     "url": 'https://cdn.datatables.net/plug-ins/2.0.8/i18n/tr.json',
                 },
                 "paging": true,
                 "pageLength": 10,
-                "lengthMenu": [5, 10, 25, 50, 100]
+                "lengthMenu": [5, 10, 25, 50, 100],
+                "columns": [
+                    { "data": "id" },
+                    { "data": "name" },
+                    { "data": "authorName" },
+                    {
+                        "data": null,
+                        "render": function (data, type, row) {
+                            return `<a class="btn btn-danger btn-sm" href="/Books/Delete/${row.id}">Delete</a>
+                                     <a class="btn btn-warning btn-sm openUpdateModal" data-id="${row.id}">Update</a>`;
+                        }
+                    }
+                ],
+                "ajax": {
+                    "url": baseUrl + 'api/Books/GetList',
+                    "type": "GET",
+                    "headers": {
+                        'Authorization': 'Bearer @ViewData["Token"]'
+                    },
+                    "dataType": "json",
+                    "dataSrc": ""
+                }
             });
-        });
 
-        $(function () {
             // Tooltip initialization
-            $('[data-toggle="tooltip"]').tooltip();
+            $(function () {
+                $('[data-toggle="tooltip"]').tooltip();
+            });
+
+            $('#openCreateModal').click(function () {
+                $.get('@Url.Action("Create", "Books")')
+                    .done(function (data) {
+                        $('#modalContent').html(data);
+                        $('#createBookModal').modal('show');
+                    })
+                    .fail(function () {
+                        Swal.fire({
+                            title: 'Error!',
+                            text: 'An error occurred while loading the create book page.',
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
+                    });
+            });
+
+            $(document).on('click', '.openUpdateModal', function () {
+                var bookId = $(this).data('id');
+                $.get('@Url.Action("Update", "Books")', { id: bookId })
+                    .done(function (data) {
+                        $('#modalContentUpdate').html(data);
+                        $('#updateBookModal').modal('show');
+                    })
+                    .fail(function () {
+                        Swal.fire({
+                            title: 'Error!',
+                            text: 'An error occurred while loading the update book page.',
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
+                    });
+            });
         });
     </script>
 }

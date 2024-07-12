@@ -1,5 +1,9 @@
 ﻿@model WebApp.Models.Book.CreateBookModel
 
+@{
+    Layout = "_ModalLayout";
+}
+
 <div class="container">
     <form id="createBookForm" class="w-50 m-5 p-3 shadow mx-auto" method="post">
         <div class="mb-3">
@@ -10,7 +14,10 @@
             <label for="AuthorId" class="form-label">AuthorId:</label>
             <input type="text" class="form-control" name="AuthorId" id="AuthorId" asp-for="AuthorId" />
         </div>
-
+        <div class="mb-3">
+            <label for="ImageUrl" class="form-label">Image:</label>
+            <input type="file" class="form-control" id="ImageUrl" name="ImageUrl" />
+        </div>
         <div class="mb-3">
             <button type="button" class="btn btn-primary w-100" id="saveButton">Save</button>
         </div>
@@ -22,15 +29,20 @@
     <script>
         $(function () {
             $('#saveButton').click(function () {
-                var form = $('#createBookForm');
-                var data = new FormData(form[0]);
+                var formData = new FormData();
+                formData.append('Name', $('#Name').val());
+                formData.append('AuthorId', $('#AuthorId').val());
+                formData.append('ImageUrl', $('#ImageUrl')[0].files[0]);
               
                 $.ajax({
-                    url: '@Url.Action("Create", "Books")',
+                    url: baseUrl + 'api/Books/Add',
                     type: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer @ViewData["Token"]'
+                    },
                     processData: false,
                     contentType: false,
-                    data: data,
+                    data: formData,
                     success: function (response) {
                         Swal.fire({
                             title: 'Success!',

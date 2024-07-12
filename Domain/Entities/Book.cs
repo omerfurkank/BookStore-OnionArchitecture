@@ -11,6 +11,7 @@ public class Book : Entity
 {
     public string Name { get; set; }
     public int AuthorId { get; set; }
+    public string? ImageUrl { get; set; }
     public Author Author { get; set; }
     public Book()
     {

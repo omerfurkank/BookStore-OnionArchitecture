@@ -23,7 +23,7 @@ public class AuthorsController : BaseController
         return Ok(response);
     }
     [HttpPost("add")]
-    public async Task<IActionResult> Add([FromBody] CreateAuthorCommandRequest request)
+    public async Task<IActionResult> Add([FromForm] CreateAuthorCommandRequest request)
     {
         var response = await Mediator.Send(request);
         return Created("", response);

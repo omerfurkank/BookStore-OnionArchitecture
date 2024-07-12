@@ -21,6 +21,14 @@ namespace Application.Features.Authors.Commands.CreateAuthor
         public async Task<CreateAuthorCommandResponse> Handle(CreateAuthorCommandRequest request, CancellationToken cancellationToken)
         {
             Author mappedAuthor = _mapper.Map<Author>(request);
+            if (request.ImageUrl != null)
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                    await request.ImageUrl.CopyToAsync(memoryStream);
+                    mappedAuthor.ImageUrl = Convert.ToBase64String(memoryStream.ToArray());
+                }
+            }
             Author createdAuthor = await _authorRepository.AddAsync(mappedAuthor);
             var response = _mapper.Map<CreateAuthorCommandResponse>(createdAuthor);
             return response;

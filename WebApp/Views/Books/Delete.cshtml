@@ -1,32 +1,26 @@
 ﻿@model int
 
-<div class="container mt-4">
-    <h1>Author Details</h1>
-
-    <div class="mt-4" id="bookDetails">
-        <p><strong>ID:</strong> <span id="authorId"></span></p>
-        <p><strong>Name:</strong> <span id="authorName"></span></p>
-        <p><strong>Image:</strong> <img id="authorImage" alt="Author Image" class="img-fluid" style="max-width: 200px;" /></p>
-    </div>
-</div>
-
 @section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         $(function () {
             $.ajax({
-                url: baseUrl + 'api/Authors/@Model',
-                type: 'GET',
+                url: baseUrl + 'api/Books/@Model',
+                type: 'DELETE',
                 headers: {
                     'Authorization': 'Bearer @ViewData["Token"]'
                 },
-                success: function (data) {
-                    $('#authorId').text(data.id);
-                    $('#authorName').text(data.name);
-                    if (data.imageUrl) {
-                        $('#authorImage').attr('src', data.imageUrl);
-                    } else {
-                        $('#authorImage').attr('alt', 'No Image Available');
-                    }
+                success: function (response) {
+                    Swal.fire({
+                        title: 'Success!',
+                        text: 'getti',
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = '@Url.Action("GetList", "Books")';
+                        }
+                    });
                 },
                 error: function (xhr, status, error) {
                     var errorMessage;
@@ -47,4 +41,3 @@
         });
     </script>
 }
-

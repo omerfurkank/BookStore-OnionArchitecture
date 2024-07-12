@@ -1,7 +1,53 @@
-﻿@model WebApp.Models.Book.GetBookModel
+﻿@model int
 
-id= @Model.Id
-<br />
-name= @Model.Name
-<br />
-author id = @Model.AuthorId
+<div class="container mt-4">
+    <h1>Author Details</h1>
+
+    <div class="mt-4" id="bookDetails">
+        <p><strong>ID:</strong> <span id="Id"></span></p>
+        <p><strong>Name:</strong> <span id="authorName"></span></p>
+        <p><strong>Author ID:</strong> <span id="authorId"></span></p>
+        <p><strong>Image:</strong> <img id="Image" alt="Image" class="img-fluid" style="max-width: 200px;" /></p>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(function () {
+            $.ajax({
+                url: baseUrl + 'api/Books/@Model',
+                type: 'GET',
+                headers: {
+                    'Authorization': 'Bearer @ViewData["Token"]'
+                },
+                success: function (data) {
+                    $('#Id').text(data.id);
+                    $('#authorName').text(data.name);
+                    $('#authorId').text(data.authorId);
+                    if (data.imageUrl) {
+                        $('#Image').attr('src', data.imageUrl);
+                    } else {
+                        $('#Image').attr('alt', 'No Image Available');
+                    }
+                },
+                error: function (xhr, status, error) {
+                    var errorMessage;
+                    if (xhr.status === 401) {
+                        errorMessage = 'Yetkilendirme hatası! Lütfen giriş yapın.';
+                    } else {
+                        errorMessage = xhr.responseJSON ? xhr.responseJSON.message : 'Yazar eklenirken bir hata oluştu.';
+                    }
+
+                    Swal.fire({
+                        title: 'Error!',
+                        text: errorMessage,
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                }
+            });
+        });
+    </script>
+}
+
+el.AuthorId
