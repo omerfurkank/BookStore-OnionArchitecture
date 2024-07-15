@@ -23,7 +23,7 @@
                     $('#authorId').text(data.id);
                     $('#authorName').text(data.name);
                     if (data.imageUrl) {
-                        $('#authorImage').attr('src', data.imageUrl);
+                        $('#authorImage').attr('src','data:image/png;base64,' + data.imageUrl);
                     } else {
                         $('#authorImage').attr('alt', 'No Image Available');
                     }

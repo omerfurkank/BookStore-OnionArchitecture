@@ -1,6 +1,4 @@
-﻿<link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css" />
-
-<a class="btn btn-danger btn-sm" id="openCreateModal">Create</a>
+﻿<a class="btn btn-danger btn-sm" id="openCreateModal">Create</a>
 
 <table id="authorTable" class="display">
     <thead>
@@ -66,7 +64,43 @@
                         }
                     }
                 },
-                "filter": true
+                "filter": true,
+                "dom": 'Bfrtip',
+                // "buttons": [
+                //     'copy', 'csv', 'excel', 'pdf', 'print'
+                // ]
+                         "buttons": [
+                    {
+                        extend: 'copy',
+                        exportOptions: {
+                            columns: [0, 1]
+                        }
+                    },
+                    {
+                        extend: 'csv',
+                        exportOptions: {
+                            columns: [0, 1]
+                        }
+                    },
+                    {
+                        extend: 'excel',
+                        exportOptions: {
+                            columns: [0, 1]
+                        }
+                    },
+                    {
+                        extend: 'pdf',
+                        exportOptions: {
+                            columns: [0, 1]
+                        }
+                    },
+                    {
+                        extend: 'print',
+                        exportOptions: {
+                            columns: [0, 1]
+                        }
+                    }
+                ]
             });
 
             // Tooltip initialization

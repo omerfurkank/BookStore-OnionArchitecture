@@ -70,8 +70,33 @@
                         'Authorization': 'Bearer @ViewData["Token"]'
                     },
                     "dataType": "json",
-                    "dataSrc": ""
-                }
+                    "dataSrc": "",
+                    "error": function (xhr, status, error) {
+                        if (xhr.status === 401) {
+                            Swal.fire({
+                                title: 'Yetkisiz Erişim!',
+                                text: 'Bu işlemi gerçekleştirmek için giriş yapmalısınız.',
+                                icon: 'warning',
+                                confirmButtonText: 'Anladım'
+                            }).then(() => {
+                                window.location.href = '/Auth/Login'; // Kullanıcıyı giriş sayfasına yönlendir
+                            });
+                        } else {
+                            Swal.fire({
+                                title: 'Hata!',
+                                text: 'Bir hata oluştu. Lütfen tekrar deneyin.',
+                                icon: 'error',
+                                confirmButtonText: 'Tamam'
+                            });
+                        }
+                    }
+                },
+                "filter": true,
+                "dom": 'Bfrtip',
+                "buttons": [
+                    'copy', 'csv', 'excel', 'pdf', 'print'
+                ]
+                
             });
 
             // Tooltip initialization
