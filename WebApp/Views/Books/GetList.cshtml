@@ -53,7 +53,12 @@
                 "lengthMenu": [5, 10, 25, 50, 100],
                 "columns": [
                     { "data": "id" },
-                    { "data": "name" },
+                    {
+                        "data": "name",
+                        "render": function (data, type, row) {
+                            return `<a href="/Books/GetById/${row.id}" data-toggle="tooltip" title="ID: ${row.id}, Name: ${data} AuthorName: ${row.authorName}">${data}</a>`;
+                        }
+                    },
                     { "data": "authorName" },
                     {
                         "data": null,
@@ -95,10 +100,8 @@
                 "dom": 'Bfrtip',
                 "buttons": [
                     'copy', 'csv', 'excel', 'pdf', 'print'
-                ]
-                
+                ]               
             });
-
             // Tooltip initialization
             $(function () {
                 $('[data-toggle="tooltip"]').tooltip();

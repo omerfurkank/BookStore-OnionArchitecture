@@ -24,6 +24,14 @@ public class UpdateBookCommandHandler : IRequestHandler<UpdateBookCommandRequest
     {
         Book? book = await _bookRepository.GetAsync(predicate: b => b.Id == request.Id);
         book = _mapper.Map(request, book);
+        if (request.ImageUrl != null)
+        {
+            using (var memoryStream = new MemoryStream())
+            {
+                await request.ImageUrl.CopyToAsync(memoryStream);
+                book.ImageUrl = Convert.ToBase64String(memoryStream.ToArray());
+            }
+        }
         Book updatedBook = await _bookRepository.UpdateAsync(book);
         var response = _mapper.Map<UpdateBookCommandResponse>(updatedBook);
         return response;

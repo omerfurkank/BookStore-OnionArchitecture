@@ -29,7 +29,7 @@ public class AuthorsController : BaseController
         return Created("", response);
     }
     [HttpPut("update")]
-    public async Task<IActionResult> Update([FromBody] UpdateAuthorCommandRequest request)
+    public async Task<IActionResult> Update([FromForm] UpdateAuthorCommandRequest request)
     {
         var response = await Mediator.Send(request);
         return Ok(response);

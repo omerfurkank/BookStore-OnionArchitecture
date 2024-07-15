@@ -22,32 +22,6 @@ public class AuthController : Controller
     {
         return View(new LoginModel());
     }
-    //[HttpPost]
-    //public async Task<IActionResult> Login(LoginModel userLoginModel)
-    //{
-    //    // Basit bir doğrulama ve token alma işlemi (gerçek uygulamada bu yöntem farklı olabilir)
-
-    //    using var client = new HttpClient();
-    //    var content = new StringContent(JsonSerializer.Serialize(userLoginModel), Encoding.UTF8, "application/json");
-    //    var response = await client.PostAsync("http://localhost:5298/api/Auth/Login", content);
-    //    if (response.IsSuccessStatusCode)
-    //    {
-    //        var jsonData = await response.Content.ReadAsStringAsync();
-    //        var tokenModel = JsonSerializer.Deserialize<LoginResponseModel>(jsonData, new JsonSerializerOptions
-    //        {
-    //            PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-    //        });
-
-    //        JwtSecurityTokenHandler handler = new();
-    //        var token = handler.ReadJwtToken(tokenModel.AccessToken);
-    //        var claims = token.Claims.ToList();
-    //        claims.Add(new Claim("accessToken", tokenModel.AccessToken));
-    //        HttpContext.Response.Cookies.Append("AccessToken", token.ToString());
-    //        return RedirectToAction("Index", "Home");
-    //    }
-
-    //    return RedirectToAction("Login", "Home");
-    //}
     [HttpPost]
     public async Task<IActionResult> Login(LoginModel userLoginModel)
     {

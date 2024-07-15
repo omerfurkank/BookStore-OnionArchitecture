@@ -27,13 +27,13 @@ public class BooksController : BaseController
         return Ok(response);
     }
     [HttpPost("add")]
-    public async Task<IActionResult> Add([FromBody] CreateBookCommandRequest request)
+    public async Task<IActionResult> Add([FromForm] CreateBookCommandRequest request)
     {
         var response = await Mediator.Send(request);
         return Created("", response);
     }
     [HttpPut("update")]
-    public async Task<IActionResult> Update([FromBody] UpdateBookCommandRequest request)
+    public async Task<IActionResult> Update([FromForm] UpdateBookCommandRequest request)
     {
         var response = await Mediator.Send(request);
         return Ok(response);

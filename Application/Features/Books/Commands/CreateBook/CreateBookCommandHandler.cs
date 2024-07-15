@@ -24,6 +24,14 @@ public class CreateBookCommandHandler : IRequestHandler<CreateBookCommandRequest
         await _businessRules.CheckBookExists(request.Name);
 
         Book mappedBook = _mapper.Map<Book>(request);
+        if (request.ImageUrl != null)
+        {
+            using (var memoryStream = new MemoryStream())
+            {
+                await request.ImageUrl.CopyToAsync(memoryStream);
+                mappedBook.ImageUrl = Convert.ToBase64String(memoryStream.ToArray());
+            }
+        }
         Book createdBook = await _bookRepository.AddAsync(mappedBook);
         var response = _mapper.Map<CreateBookCommandResponse>(createdBook);
         return response;

@@ -1,11 +1,11 @@
 ﻿@model int
 
 <div class="container mt-4">
-    <h1>Author Details</h1>
+    <h1>Book Details</h1>
 
     <div class="mt-4" id="bookDetails">
-        <p><strong>ID:</strong> <span id="Id"></span></p>
-        <p><strong>Name:</strong> <span id="authorName"></span></p>
+        <p><strong>ID:</strong> <span id="id"></span></p>
+        <p><strong>Name:</strong> <span id="name"></span></p>
         <p><strong>Author ID:</strong> <span id="authorId"></span></p>
         <p><strong>Image:</strong> <img id="Image" alt="Image" class="img-fluid" style="max-width: 200px;" /></p>
     </div>
@@ -21,11 +21,11 @@
                     'Authorization': 'Bearer @ViewData["Token"]'
                 },
                 success: function (data) {
-                    $('#Id').text(data.id);
-                    $('#authorName').text(data.name);
+                    $('#id').text(data.id);
+                    $('#name').text(data.name);
                     $('#authorId').text(data.authorId);
                     if (data.imageUrl) {
-                        $('#Image').attr('src', data.imageUrl);
+                        $('#Image').attr('src', 'data:image/png;base64,' + data.imageUrl);
                     } else {
                         $('#Image').attr('alt', 'No Image Available');
                     }
@@ -49,5 +49,3 @@
         });
     </script>
 }
-
-el.AuthorId

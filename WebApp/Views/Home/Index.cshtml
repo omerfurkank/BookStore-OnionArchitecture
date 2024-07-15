@@ -1,114 +1,11 @@
 ﻿
-<!DOCTYPE html>
-<html>
-<head>
-    <title>jQuery UI Tabs Example</title>
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css" />
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <!-- jQuery UI -->
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            var path = "";
-            $("#tabs").tabs({
-                activate: function (event, ui) {
-                    var tabId = ui.newTab.find('a').attr('id');
-
-                    if (tabId == "books") {
-                      //  path = "/User/List";
-                        loadDataTable('#bookTable', 'api/Books/GetList', ['id', 'name', 'authorName']);
-
-                     }
-                    if (tabId === "authors") {
-                        loadDataTable('#authorTable', 'api/Authors/GetList', ['id', 'name']);
-                    }
-
-
-
-                }
-            });
-        });
-    </script>
-</head>
-<body>
-
-    
- 
-     <div id="tabs">
-        <ul>
-            <li><a href="#tab-authors" id="authors">Authors</a></li>
-            <li><a href="#tab-books" id="books">Books</a></li>
-          
-        </ul>
-      
-            <div id="tab-authors">
-                <table id="authorTable" class="display">
-                    <thead>
-                        <tr>
-                            <th>Id</th>
-                            <th>Name</th>
-                        </tr>
-                    </thead>
-                </table>
-            </div>
-       
-        <div id="tab-books">
-            <table id="bookTable" class="display">
-                <thead>
-                    <tr>
-                        <th>Id</th>
-                        <th>Name</th>
-                        <th>Author Name</th>
-                    </tr>
-                </thead>
-            </table>
-        </div>
-        
-
-    </div> 
-</body>
-</html>
-
-<script>var baseUrl = 'http://localhost:5298/';</script>
-<script>
-
-    function loadDataTable(tableId, apiUrl, columns) {
-        $(tableId).DataTable({
-            "language": {
-                "url": 'https://cdn.datatables.net/plug-ins/2.0.8/i18n/tr.json',
-            },
-            "paging": true,
-            "pageLength": 10,
-            "lengthMenu": [5, 10, 25, 50, 100],
-            "columns": columns.map(col => ({ "data": col })), // Columnları dinamik olarak belirle
-            "ajax": {
-                "url": baseUrl + apiUrl,
-                "type": "GET",
-                "headers": {
-                    'Authorization': 'Bearer @ViewData["Token"]' // Yetkilendirme için token ekleniyor
-                },
-                "dataType": "json",
-                "dataSrc": "" // JSON verinin kaynağı
-            },
-            "filter": true,
-            "destroy": true // Eski DataTable'ın kaldırılması için
-        });
-    }
-  
-            
-</script>
-
-
-@* 
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css" />
-
 
 <div id="tabs">
     <ul>
-        <li><a href="#tab-authors">Authors</a></li>
-        <li><a href="#tab-books">Books</a></li>
+        <li><a href="#tab-authors" id="authors">Authors</a></li>
+        <li><a href="#tab-books" id="books">Books</a></li>
     </ul>
     <div id="tab-authors">
         <table id="authorTable" class="display">
@@ -133,28 +30,51 @@
     </div>
 </div>
 
+<script>var baseUrl = 'http://localhost:5298/';</script>
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<!-- jQuery UI -->
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+<script>
+    $(document).ready(function () {
+        var path = "";
+        $("#tabs").tabs({
+            activate: function (event, ui) {
+                var tabId = ui.newTab.find('a').attr('id');
 
-@section Scripts {
-
-    <script>
-        $(document).ready(function () {
-            var path = "";
-            $("#tabs").tabs({
-                activate: function (event, ui) {
-                    var tabName = ui.newTab.text();
-                    alert(tabName);
-                    if (tabName === "tab-authors") {
-                        loadDataTable('#authorTable', 'api/Authors/GetList', ['id', 'name']);
-                    }
-                    if (tabName === "tab-books") {
-                        alert("sd");
-                        loadDataTable('#bookTable', 'api/Books/GetList', ['id', 'name', 'authorName']);
-                    }
+                if (tabId == "books") {
+                    //  path = "/User/List";
+                    loadDataTable('#bookTable', 'api/Books/GetList', ['id', 'name', 'authorName']);
                 }
-            });
+                if (tabId === "authors") {
+                    loadDataTable('#authorTable', 'api/Authors/GetList', ['id', 'name']);
+                }
+            }
         });
-    </script>
+    });
+</script>
 
-    
-}
- *@
+<script>
+    function loadDataTable(tableId, apiUrl, columns) {
+        $(tableId).DataTable({
+            "language": {
+                "url": 'https://cdn.datatables.net/plug-ins/2.0.8/i18n/tr.json',
+            },
+            "paging": true,
+            "pageLength": 10,
+            "lengthMenu": [5, 10, 25, 50, 100],
+            "columns": columns.map(col => ({ "data": col })), // Columnları dinamik olarak belirle
+            "ajax": {
+                "url": baseUrl + apiUrl,
+                "type": "GET",
+                "headers": {
+                    'Authorization': 'Bearer @ViewData["Token"]' // Yetkilendirme için token ekleniyor
+                },
+                "dataType": "json",
+                "dataSrc": "" // JSON verinin kaynağı
+            },
+            "filter": true,
+            "destroy": true // Eski DataTable'ın kaldırılması için
+        });
+    }
+</script>

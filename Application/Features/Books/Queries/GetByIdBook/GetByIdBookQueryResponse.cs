@@ -6,4 +6,5 @@ public class GetByIdBookQueryResponse
     public string? Name { get; set; }
     public int AuthorId { get; set; }
     //public string AuthorName { get; set; }
+    public string ImageUrl { get; set; }
 }

@@ -24,6 +24,14 @@ public class UpdateAuthorCommandHandler : IRequestHandler<UpdateAuthorCommandReq
     {
         Author? author = await _authorRepository.GetAsync(predicate: b => b.Id == request.Id);
         author = _mapper.Map(request, author);
+        if (request.ImageUrl != null)
+        {
+            using (var memoryStream = new MemoryStream())
+            {
+                await request.ImageUrl.CopyToAsync(memoryStream);
+                author.ImageUrl = Convert.ToBase64String(memoryStream.ToArray());
+            }
+        }
         Author updatedAuthor = await _authorRepository.UpdateAsync(author);
         var response = _mapper.Map<UpdateAuthorCommandResponse>(updatedAuthor);
         return response;

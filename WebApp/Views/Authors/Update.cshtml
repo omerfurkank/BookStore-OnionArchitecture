@@ -5,7 +5,7 @@
 @model int
 
 
-    <form  id="updateAuthorForm" class="w-120  p-3 shadow mx-auto" method="post">
+<form id="updateAuthorForm" class="w-120  p-3 shadow mx-auto" method="post" enctype="multipart/form-data">
         <input type="hidden" name="Id" id="Id" />
         <div class="mb-3">
             <label for="Name" class="form-label">Name:</label>
@@ -56,11 +56,10 @@
 
             // Güncelleme işlemi
             $('#updateButton').click(function () {
-                var formData = {
-                    Id: $('#Id').val(),
-                    Name: $('#Name').val(),
-                    ImageUrl: $('#ImageUrl').val()
-                };
+                var formData = new FormData();
+                formData.append('Id', $('#Id').val());
+                formData.append('Name', $('#Name').val());
+                formData.append('ImageUrl', $('#ImageUrl')[0].files[0]);
 
                 $.ajax({
                     url: baseUrl + 'api/Authors/Update',
@@ -68,8 +67,9 @@
                     headers: {
                         'Authorization': 'Bearer @ViewData["Token"]'
                     },
-                    contentType: 'application/json',
-                    data: JSON.stringify(formData),
+                    processData: false,
+                    contentType: false,
+                    data:formData,
                     success: function (response) {
                         Swal.fire({
                             title: 'Success!',
