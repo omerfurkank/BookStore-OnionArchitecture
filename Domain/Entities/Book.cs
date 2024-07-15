@@ -13,15 +13,5 @@ public class Book : Entity
     public int AuthorId { get; set; }
     public string? ImageUrl { get; set; }
     public Author Author { get; set; }
-    public Book()
-    {
-        
-    }
 
-    public Book(int id, string name, int authorId)
-    {
-        Id = id;
-        Name = name;
-        AuthorId = authorId;
-    }
 }

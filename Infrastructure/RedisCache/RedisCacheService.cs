@@ -31,7 +31,7 @@ public class RedisCacheService : ICacheService
 
     public async Task SetAsync<T>(string key, T value, DateTime? expirationTime = null)
     {
-        TimeSpan timeUnitExpiration = expirationTime.Value - DateTime.Now;
+        TimeSpan timeUnitExpiration = expirationTime.Value - DateTime.UtcNow;
         await database.StringSetAsync(key, JsonConvert.SerializeObject(value), timeUnitExpiration);
     }
     public async Task RemoveAsync(string key)

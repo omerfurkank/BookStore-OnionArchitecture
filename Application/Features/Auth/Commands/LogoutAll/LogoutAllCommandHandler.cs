@@ -17,7 +17,12 @@ public class LogoutAllCommandHandler : IRequestHandler<LogoutAllCommandRequest, 
     {
         IList<User> users = await _userRepository.GetAllUserAsync();
 
-        foreach (var user in users) { user.RefreshToken = null; await _userRepository.UpdateUserAsync(user); }
+        foreach (var user in users)
+        {
+            user.RefreshToken = null;
+            user.RefreshTokenExpiredTime = null;
+            await _userRepository.UpdateUserAsync(user);
+        }
 
         return new LogoutAllCommandResponse();
     }

@@ -21,7 +21,7 @@ public class UpdateUserWithRolesCommandHandler : IRequestHandler<UpdateUserWithR
         User? user = await _userRepository.GetUserByIdAsync(request.Id);
         user = _mapper.Map(request, user);
         await _userRepository.UpdateUserAsync(user);
-        await _userRepository.AddRolesToUserAsync(user.Id, request.Roles);
+        if (request.Roles is not null) await _userRepository.AddRolesToUserAsync(user, request.Roles);
         return new UpdateUserWithRolesCommandResponse();
     }
 }

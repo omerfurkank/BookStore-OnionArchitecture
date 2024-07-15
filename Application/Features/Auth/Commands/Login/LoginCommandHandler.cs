@@ -4,7 +4,6 @@ using AutoMapper;
 using Domain.Entities.Identity;
 using Infrastructure.Tokens;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using System.IdentityModel.Tokens.Jwt;
 
@@ -56,6 +55,5 @@ public class LoginCommandHandler : IRequestHandler<LoginCommandRequest, LoginCom
             AccessTokenExpiredTime = token.ValidTo,
             RefreshTokenExpiredTime = user.RefreshTokenExpiredTime
         };
-
     }
 }

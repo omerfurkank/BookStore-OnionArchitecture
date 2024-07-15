@@ -41,7 +41,7 @@ public class TokenService : ITokenService
         JwtSecurityToken token = new(
             issuer: _tokenSettings.Issuer,
             audience: _tokenSettings.Audience,
-            expires: DateTime.Now.AddMinutes(_tokenSettings.TokenValidityInMunitues),
+            expires: DateTime.UtcNow.AddMinutes(_tokenSettings.TokenValidityInMunitues),
             claims: claims,
             signingCredentials: new SigningCredentials(key, SecurityAlgorithms.HmacSha256)
             );
@@ -80,7 +80,7 @@ public class TokenService : ITokenService
             || !jwtSecurityToken.Header.Alg
             .Equals(SecurityAlgorithms.HmacSha256,
             StringComparison.InvariantCultureIgnoreCase))
-            throw new SecurityTokenException("Token dosn't exist.");
+            throw new SecurityTokenException("Token doesn't exist.");
 
         return principal;
 

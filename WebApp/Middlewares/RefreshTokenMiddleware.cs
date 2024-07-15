@@ -119,18 +119,23 @@ public class RefreshTokenMiddleware
                 var client = _clientFactory.CreateClient();
                 var content = new StringContent(JsonSerializer.Serialize(refreshLoginModel), Encoding.UTF8, "application/json");
                 var response = await client.PostAsync("http://localhost:5298/api/Auth/RefreshTokenLogin", content);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    await context.SignOutAsync(JwtBearerDefaults.AuthenticationScheme);
+                    context.Response.Redirect("/Auth/Login");
+                    return;
+                }
+
                 var jsonData = await response.Content.ReadAsStringAsync();
                 var newToken = JsonSerializer.Deserialize<RefreshLoginResponseModel>(jsonData, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
 
-                if (newToken != null)
-                {
-                    var claims = accessTokenValid.Claims.ToList();
-                    claims.Add(new Claim("accessToken", newToken.AccessToken));
-                    claims.Add(new Claim("refreshTokenExpire", refreshTokenExpire.ToString()));
-                    var claimsIdentity = new ClaimsIdentity(claims, JwtBearerDefaults.AuthenticationScheme);
+                var claims = accessTokenValid.Claims.ToList();
+                claims.Add(new Claim("accessToken", newToken.AccessToken));
+                claims.Add(new Claim("refreshTokenExpire", refreshTokenExpire.ToString()));
+                var claimsIdentity = new ClaimsIdentity(claims, JwtBearerDefaults.AuthenticationScheme);
 
-                    await context.SignInAsync(JwtBearerDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
-                }
+                await context.SignInAsync(JwtBearerDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
             }
         }
         else

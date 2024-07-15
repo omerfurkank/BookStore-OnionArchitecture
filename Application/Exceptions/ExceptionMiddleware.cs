@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using static System.Collections.Specialized.BitVector32;
 
@@ -48,15 +49,13 @@ public class ExceptionMiddleware : IMiddleware
 
         List<string> errors = new()
             {
-                $"Hata Mesajı : {exception.Message}"
+                $"Error Message : {exception.Message}"
             };
 
-        return httpContext.Response.WriteAsync(new ExceptionModel
-        {
-            Errors = errors,
-            StatusCode = statusCode
-        }.ToString());
+        ExceptionModel exceptionModel = new() { Errors = errors, StatusCode = statusCode };
 
+        var response = JsonSerializer.Serialize(exceptionModel);
+        return httpContext.Response.WriteAsync(response);
     }
 
     private static int GetStatusCode(Exception exception) =>

@@ -39,7 +39,7 @@ where TEntity : Entity
 
         if (!tracking) queryable = queryable.AsNoTracking();
         if (include is not null) queryable = include(queryable);
-        if (predicate is not null) queryable = Query().Where(predicate);
+        if (predicate is not null) queryable = queryable.Where(predicate);
         return await queryable.Skip(index * size).Take(size).ToListAsync();
     }
 
@@ -54,6 +54,7 @@ where TEntity : Entity
     {
         foreach (TEntity entity in entities)
             entity.CreatedDate = DateTime.UtcNow;
+
         await Context.AddRangeAsync(entities);
         await Context.SaveChangesAsync();
         return entities;
@@ -69,6 +70,7 @@ where TEntity : Entity
     {
         foreach (TEntity entity in entities)
             entity.UpdatedDate = DateTime.UtcNow;
+
         Context.UpdateRange(entities);
         await Context.SaveChangesAsync();
         return entities;

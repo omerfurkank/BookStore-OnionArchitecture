@@ -40,6 +40,10 @@ public class AuthBusinessRules
     }
     public void CheckRefreshTokenExpiredDate(DateTime? expiredDate)
     {
-        if (expiredDate <= DateTime.Now) throw new BusinessException("AuthMessages.RefreshTokenisExpired");
+        if (expiredDate is null || expiredDate <= DateTime.UtcNow) throw new BusinessException("AuthMessages.RefreshTokenisExpired");
+    }
+    public void CheckRefreshTokenIsNull(User user)
+    {
+        if (user.RefreshToken is null) throw new BusinessException("AuthMessages.RefreshTokenDoesNotExist");
     }
 }

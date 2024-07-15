@@ -2,16 +2,13 @@
 
 namespace Application.Exceptions;
 
-public class ExceptionModel : ErrorStatusCode
+public class ExceptionModel
 {
-    public IEnumerable<string>? Errors { get; set; }
+    public int StatusCode { get; set; }
+    public List<string> Errors { get; set; } = new List<string>();
 
     public override string ToString()
     {
         return JsonConvert.SerializeObject(this);
     }
-}
-public class ErrorStatusCode
-{
-    public int StatusCode { get; set; }
 }

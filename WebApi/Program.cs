@@ -66,7 +66,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors("AllowSpecificOrigin");
 app.UseAuthorization();
-app.ConfigureExceptionHandlingMiddleware();
+app.UseMiddleware<ExceptionMiddleware>();
 
 app.MapControllers();
 

@@ -28,7 +28,7 @@ public class CachingBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, 
 
             var response = await next();
             if (response is not null)
-                await _cacheService.SetAsync(cacheKey, response, DateTime.Now.AddMinutes(cacheTime));
+                await _cacheService.SetAsync(cacheKey, response, DateTime.UtcNow.AddMinutes(cacheTime));
 
             return response;
     }
