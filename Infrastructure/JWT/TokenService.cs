@@ -11,7 +11,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Infrastructure.Tokens;
+namespace Infrastructure.JWT;
 public class TokenService : ITokenService
 {
     private readonly UserManager<User> _userManager;

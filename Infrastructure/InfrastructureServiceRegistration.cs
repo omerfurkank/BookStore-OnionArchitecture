@@ -1,7 +1,6 @@
-﻿using Domain.Entities.Identity;
-using Infrastructure.RedisCache;
+﻿using Infrastructure.RedisCache;
 using Infrastructure.Serilog;
-using Infrastructure.Tokens;
+using Infrastructure.JWT;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

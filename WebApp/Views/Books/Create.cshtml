@@ -1,16 +1,16 @@
-﻿@model WebApp.Models.Book.CreateBookModel
+﻿
 
 @{ Layout = "_ModalLayout"; }
 
 <div class="container">
-    <form id="createBookForm" class="w-50 m-5 p-3 shadow mx-auto" method="post">
+    <form id="createBookForm" class="w-100 m-10 p-3 shadow mx-auto" method="post">
         <div class="mb-3">
             <label for="Name" class="form-label">Name:</label>
-            <input type="text" class="form-control" name="Name" id="Name" asp-for="Name" />
+            <input type="text" class="form-control" name="Name" id="Name" />
         </div>
         <div class="mb-3">
             <label for="AuthorId" class="form-label">AuthorId:</label>
-            <input type="text" class="form-control" name="AuthorId" id="AuthorId" asp-for="AuthorId" />
+            <input type="text" class="form-control" name="AuthorId" id="AuthorId" />
         </div>
         <div class="mb-3">
             <label for="ImageUrl" class="form-label">Image:</label>
@@ -23,7 +23,6 @@
 </div>
 
 @section Scripts {
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         $(function () {
             $('#saveButton').click(function () {

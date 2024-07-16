@@ -1,0 +1,266 @@
+﻿
+<div id="tabs">
+    <ul>
+        <li><a href="#tab-create-author">Create Author</a></li>
+        <li><a href="#tab-create-book">Create Book</a></li>
+    </ul>
+    <div id="tab-create-author">
+        <div class="container">
+            <h3>First, add Author</h3>
+            <form id="createAuthorForm" class="w-50 m-5 p-3 shadow mx-auto" method="post" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label for="authorName" class="form-label">Name:</label>
+                    <input type="text" class="form-control" id="authorName" name="authorName" required />
+                </div>
+                <div class="mb-3">
+                    <label for="authorImageUrl" class="form-label">ImageUrl:</label>
+                    <input type="file" class="form-control" id="authorImageUrl" name="authorImageUrl" />
+                </div>
+                <div class="mb-3 d-flex justify-content-end">
+                    <button type="button" class="btn btn-primary w-10" id="saveAuthorButton">Save and Next</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="tab-create-book">
+        <div class="container">
+            <h3>Then, add Book</h3>
+            <form id="createBookForm" class="w-50 m-5 p-3 shadow mx-auto" method="post" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label for="bookName" class="form-label">Name:</label>
+                    <input type="text" class="form-control" name="bookName" id="bookName" />
+                </div>
+                <div class="mb-3">
+                    <label for="bookAuthorId" class="form-label">AuthorId:</label>
+                    <input type="text" class="form-control" name="bookAuthorId" id="bookAuthorId" />
+                </div>
+                <div class="mb-3">
+                    <label for="bookImageUrl" class="form-label">Image:</label>
+                    <input type="file" class="form-control" id="bookImageUrl" name="bookImageUrl" />
+                </div>
+                <div class="mb-3 d-flex justify-content-end">
+                    <button type="button" class="btn btn-primary w-100" id="saveBookButton">Save All</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        var authorData = new FormData();
+
+        $("#tabs").tabs();
+
+        $('#saveAuthorButton').click(function () {
+            var authorName = $('#authorName').val();
+            var authorImageUrl = $('#authorImageUrl')[0].files[0];
+
+            // Author form validation
+            $('#createAuthorForm').validate({
+                rules: {
+                    authorName: {
+                        required: true,
+                        minlength: 2
+                    }
+                },
+                messages: {
+                    authorName: {
+                        required: "Enter your name",
+                        minlength: "Your name must have at least 2 characters."
+                    }
+                },
+                submitHandler: function (form) {
+                    authorData.append('Name', authorName);
+                    authorData.append('ImageUrl', authorImageUrl);
+                    $("#tabs").tabs("option", "active", 1); // Switch to Book tab
+                }
+            });
+
+            if ($('#createAuthorForm').valid()) {
+                authorData.append('Name', authorName);
+                authorData.append('ImageUrl', authorImageUrl);
+                $("#tabs").tabs("option", "active", 1); // Switch to Book tab
+            }
+        });
+
+        $('#saveBookButton').click(function () {
+            var bookName = $('#bookName').val();
+            var bookAuthorId = $('#bookAuthorId').val();
+            var bookImageUrl = $('#bookImageUrl')[0].files[0];
+
+            // Book form validation
+            $('#createBookForm').validate({
+                rules: {
+                    bookName: {
+                        required: true,
+                        minlength: 2
+                    },
+                    bookAuthorId: {
+                        required: true,
+                        digits: true
+                    }
+                },
+                messages: {
+                    bookName: {
+                        required: "Enter the book name",
+                        minlength: "The book name must have at least 2 characters."
+                    },
+                    bookAuthorId: {
+                        required: "Enter the author ID",
+                        digits: "Author ID must be a numeric value"
+                    }
+                },
+                submitHandler: function (form) {
+                    var bookData = new FormData();
+                    bookData.append('Name', bookName);
+                    bookData.append('AuthorId', bookAuthorId);
+                    bookData.append('ImageUrl', bookImageUrl);
+
+                    // Save author data
+                    $.ajax({
+                        url: baseUrl + 'api/Authors/Add',
+                        type: 'POST',
+                        headers: {
+                            'Authorization': 'Bearer @ViewData["Token"]'
+                        },
+                        processData: false,
+                        contentType: false,
+                        data: authorData,
+                        success: function (response) {
+                            // Save book data
+                            $.ajax({
+                                url: baseUrl + 'api/Books/Add',
+                                type: 'POST',
+                                headers: {
+                                    'Authorization': 'Bearer @ViewData["Token"]'
+                                },
+                                processData: false,
+                                contentType: false,
+                                data: bookData,
+                                success: function (response) {
+                                    Swal.fire({
+                                        title: 'Success!',
+                                        text: 'Book and author added successfully!',
+                                        icon: 'success',
+                                        confirmButtonText: 'OK'
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            window.location.href = '@Url.Action("Index", "Home")';
+                                        }
+                                    });
+                                },
+                                error: function (xhr, status, error) {
+                                    var errorMessage;
+                                    if (xhr.status === 401) {
+                                        errorMessage = 'Authorization error! Please log in.';
+                                    } else {
+                                        errorMessage = xhr.responseJSON ? xhr.responseJSON.message : 'An error occurred while adding the book.';
+                                    }
+
+                                    Swal.fire({
+                                        title: 'Error!',
+                                        text: errorMessage,
+                                        icon: 'error',
+                                        confirmButtonText: 'OK'
+                                    });
+                                }
+                            });
+                        },
+                        error: function (xhr, status, error) {
+                            var errorMessage;
+                            if (xhr.status === 401) {
+                                errorMessage = 'Authorization error! Please log in.';
+                            } else {
+                                errorMessage = xhr.responseJSON ? xhr.responseJSON.message : 'An error occurred while adding the author.';
+                            }
+
+                            Swal.fire({
+                                title: 'Error!',
+                                text: errorMessage,
+                                icon: 'error',
+                                confirmButtonText: 'OK'
+                            });
+                        }
+                    });
+                }
+            });
+
+            if ($('#createBookForm').valid()) {
+                var bookData = new FormData();
+                bookData.append('Name', bookName);
+                bookData.append('AuthorId', bookAuthorId);
+                bookData.append('ImageUrl', bookImageUrl);
+
+                // Save author data
+                $.ajax({
+                    url: baseUrl + 'api/Authors/Add',
+                    type: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer @ViewData["Token"]'
+                    },
+                    processData: false,
+                    contentType: false,
+                    data: authorData,
+                    success: function (response) {
+                        // Save book data
+                        $.ajax({
+                            url: baseUrl + 'api/Books/Add',
+                            type: 'POST',
+                            headers: {
+                                'Authorization': 'Bearer @ViewData["Token"]'
+                            },
+                            processData: false,
+                            contentType: false,
+                            data: bookData,
+                            success: function (response) {
+                                Swal.fire({
+                                    title: 'Success!',
+                                    text: 'Book and author added successfully!',
+                                    icon: 'success',
+                                    confirmButtonText: 'OK'
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        window.location.href = '@Url.Action("Index", "Home")';
+                                    }
+                                });
+                            },
+                            error: function (xhr, status, error) {
+                                var errorMessage;
+                                if (xhr.status === 401) {
+                                    errorMessage = 'Authorization error! Please log in.';
+                                } else {
+                                    errorMessage = xhr.responseJSON ? xhr.responseJSON.message : 'An error occurred while adding the book.';
+                                }
+
+                                Swal.fire({
+                                    title: 'Error!',
+                                    text: errorMessage,
+                                    icon: 'error',
+                                    confirmButtonText: 'OK'
+                                });
+                            }
+                        });
+                    },
+                    error: function (xhr, status, error) {
+                        var errorMessage;
+                        if (xhr.status === 401) {
+                            errorMessage = 'Authorization error! Please log in.';
+                        } else {
+                            errorMessage = xhr.responseJSON ? xhr.responseJSON.message : 'An error occurred while adding the author.';
+                        }
+
+                        Swal.fire({
+                            title: 'Error!',
+                            text: errorMessage,
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
+                    }
+                });
+            }
+        });
+    });
+</script>

@@ -2,7 +2,7 @@
 using Application.Repositories;
 using AutoMapper;
 using Domain.Entities.Identity;
-using Infrastructure.Tokens;
+using Infrastructure.JWT;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using System.IdentityModel.Tokens.Jwt;

@@ -1,4 +1,4 @@
-﻿namespace Infrastructure.Tokens;
+﻿namespace Infrastructure.JWT;
 
 public class TokenSettings
 {

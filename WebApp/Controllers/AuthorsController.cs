@@ -1,7 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Text.Json;
-using System.Text;
-using WebApp.Models.Author;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace WebApp.Controllers;
@@ -22,7 +19,7 @@ public class AuthorsController : Controller
     }
     public async Task<IActionResult> Create()
     {
-        return View(new CreateAuthorModel());
+        return View();
     }
     public async Task<IActionResult> Update(int id)
     {

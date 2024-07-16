@@ -1,4 +1,4 @@
-﻿using Infrastructure.Tokens;
+﻿using Infrastructure.JWT;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;

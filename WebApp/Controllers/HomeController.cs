@@ -16,6 +16,10 @@ public class HomeController : Controller
     {
         return View();
     }
+    public IActionResult Add()
+    {
+        return View();
+    }
 
     public string AdminPage()
     {

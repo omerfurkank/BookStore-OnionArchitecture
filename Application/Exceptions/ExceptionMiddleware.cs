@@ -11,8 +11,6 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
-using static System.Collections.Specialized.BitVector32;
 
 namespace Application.Exceptions;
 public class ExceptionMiddleware : IMiddleware
