@@ -37,16 +37,15 @@
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
 <script>
     $(document).ready(function () {
-        var path = "";
         $("#tabs").tabs({
+            
             activate: function (event, ui) {
                 var tabId = ui.newTab.find('a').attr('id');
 
                 if (tabId == "books") {
-                    //  path = "/User/List";
                     loadDataTable('#bookTable', 'api/Books/GetList', ['id', 'name', 'authorName']);
                 }
-                if (tabId === "authors") {
+                if (tabId == "authors") {
                     loadDataTable('#authorTable', 'api/Authors/GetList', ['id', 'name']);
                 }
             }

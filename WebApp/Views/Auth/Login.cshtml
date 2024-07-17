@@ -8,14 +8,22 @@
 <link rel="stylesheet" href="~/WebApp.styles.css" asp-append-version="true" />
 @model WebApp.Models.Auth.LoginModel
 
-<div class="container">
+<style>
+    .background-cover {
+        background-image: url('/images/realistic-neon-lights-background_23-2148907367.jpg');
+        background-size: cover;
+        background-position: center;
+    }
+</style>
+
+<div class="d-flex align-items-center justify-content-center vh-100 background-cover">
     <form class="w-50 m-5 p-3 shadow mx-auto" asp-action="Login" asp-controller="Auth" method="post">
         <div class="mb-3">
-            <label for="Email" class="form-label">Username:</label>
+            <label style="color: white;" for="Email" class="form-label">Username:</label>
             <input type="text" class="form-control" asp-for="Email" />
         </div>
         <div class="mb-3">
-            <label for="Password" class="form-label">Password:</label>
+            <label style="color:whitesmoke" for="Password" class="form-label">Password:</label>
             <input type="password" class="form-control" asp-for="Password" />
         </div>
 

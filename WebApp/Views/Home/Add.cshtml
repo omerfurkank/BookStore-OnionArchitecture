@@ -1,6 +1,6 @@
 ﻿
 <div id="tabs">
-    <ul>
+    <ul style="display: none;">
         <li><a href="#tab-create-author">Create Author</a></li>
         <li><a href="#tab-create-book">Create Book</a></li>
     </ul>
@@ -71,16 +71,11 @@
                         required: "Enter your name",
                         minlength: "Your name must have at least 2 characters."
                     }
-                },
-                submitHandler: function (form) {
-                    authorData.append('Name', authorName);
-                    authorData.append('ImageUrl', authorImageUrl);
-                    $("#tabs").tabs("option", "active", 1); // Switch to Book tab
-                }
+                }               
             });
 
             if ($('#createAuthorForm').valid()) {
-                authorData.append('Name', authorName);
+                authorData.append('Name', authorName);              
                 authorData.append('ImageUrl', authorImageUrl);
                 $("#tabs").tabs("option", "active", 1); // Switch to Book tab
             }
@@ -88,6 +83,7 @@
 
         $('#saveBookButton').click(function () {
             var bookName = $('#bookName').val();
+            console.log("fhf");
             var bookAuthorId = $('#bookAuthorId').val();
             var bookImageUrl = $('#bookImageUrl')[0].files[0];
 
