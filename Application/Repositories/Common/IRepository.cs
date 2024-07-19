@@ -18,6 +18,9 @@ public interface IRepository<T> where T : Entity
 
 
     Task<T> AddAsync(T entity);
+    Task<ICollection<T>> AddRangeAsync(ICollection<T> entity);
     Task<T> UpdateAsync(T entity);
+    Task<ICollection<T>> UpdateRangeAsync(ICollection<T> entity);
     Task<T> DeleteAsync(T entity);
+    Task<ICollection<T>> DeleteRangeAsync(ICollection<T> entity);
 }

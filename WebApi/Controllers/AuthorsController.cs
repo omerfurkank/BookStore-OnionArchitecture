@@ -1,4 +1,5 @@
 ﻿using Application.Features.Authors.Commands.CreateAuthor;
+using Application.Features.Authors.Commands.CreateRange;
 using Application.Features.Authors.Commands.DeleteAuthor;
 using Application.Features.Authors.Commands.UpdateAuthor;
 using Application.Features.Authors.Queries.GetByIdAuthor;
@@ -24,6 +25,12 @@ public class AuthorsController : BaseController
     }
     [HttpPost("add")]
     public async Task<IActionResult> Add([FromForm] CreateAuthorCommandRequest request)
+    {
+        var response = await Mediator.Send(request);
+        return Created("", response);
+    }
+    [HttpPost("addRange")]
+    public async Task<IActionResult> AddRange([FromBody] CreateRangeAuthorCommandRequest request)
     {
         var response = await Mediator.Send(request);
         return Created("", response);

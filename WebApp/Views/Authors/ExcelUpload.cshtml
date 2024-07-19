@@ -1,0 +1,72 @@
+﻿@{
+    ViewData["Title"] = "Excel Yükle";
+}
+
+<h2>Excel Yükle</h2>
+
+<!-- Excel dosyasını yükleme formu -->
+<form id="uploadExcelForm" enctype="multipart/form-data">
+    <div class="form-group">
+        <label for="excelFile">Excel Dosyası Yükle</label>
+        <input type="file" class="form-control-file" id="excelFile" name="excelFile" />
+    </div>
+    <button type="submit" class="btn btn-success">Yükle</button>
+</form>
+
+<!-- Sonuç mesajını göstermek için bir div -->
+<div id="resultMessage"></div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#uploadExcelForm').on('submit', function (event) {
+                event.preventDefault();
+                var formData = new FormData();
+                var fileInput = $('#excelFile')[0];
+
+                if (fileInput.files.length === 0) {
+                    alert('Lütfen bir dosya seçin.');
+                    return;
+                }
+
+                formData.append('excelFile', fileInput.files[0]);
+
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    var data = new Uint8Array(e.target.result);
+                    var workbook = XLSX.read(data, {type: 'array'});
+                    var worksheet = workbook.Sheets[workbook.SheetNames[0]];
+                    var jsonData = XLSX.utils.sheet_to_json(worksheet, {header: 1});
+
+                    // Başlık satırını kaldır ve JSON formatında yazarları hazırla
+                    jsonData.shift();
+                    var authors = jsonData.map(function(row) {
+                        return { Name: row[0] };
+                    });
+
+                    var request = { Authors: authors };
+
+                    $.ajax({
+                        url: baseUrl + 'api/Authors/AddRange',
+                        type: 'POST',
+                        headers: {
+                            'Authorization': 'Bearer @ViewData["Token"]'
+                        },
+                        data: JSON.stringify(request),
+                        contentType: 'application/json',
+                        processData: false,
+                        success: function (response) {
+                            $('#resultMessage').html('<div class="alert alert-success">Yazarlar başarıyla eklendi.</div>');
+                        },
+                        error: function (xhr, status, error) {
+                            $('#resultMessage').html('<div class="alert alert-danger">Dosya yüklenirken bir hata oluştu: ' + error + '</div>');
+                        }
+                    });
+                };
+                reader.readAsArrayBuffer(fileInput.files[0]);
+            });
+        });
+    </script>
+}

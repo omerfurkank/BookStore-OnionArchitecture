@@ -1,4 +1,5 @@
 ﻿using Application.Features.Authors.Commands.CreateAuthor;
+using Application.Features.Authors.Commands.CreateRange;
 using Application.Features.Authors.Commands.DeleteAuthor;
 using Application.Features.Authors.Commands.UpdateAuthor;
 using Application.Features.Authors.Queries.GetByIdAuthor;
@@ -22,6 +23,9 @@ public class MappingProfiles : Profile
     {
         CreateMap<Author, CreateAuthorCommandResponse>().ReverseMap();
         CreateMap<Author, CreateAuthorCommandRequest>().ReverseMap();
+
+        CreateMap<CreateRangeAuthorCommandRequest.AuthorDto, Author>().ReverseMap();
+        //CreateMap<List<Author>, CreateRangeAuthorCommandResponse>().ReverseMap();
 
         CreateMap<Author, UpdateAuthorCommandResponse>().ReverseMap();
         CreateMap<Author, UpdateAuthorCommandRequest>().ReverseMap();
