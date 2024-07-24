@@ -2,7 +2,9 @@
 using Application.Features.Auth.Commands.Logout;
 using Application.Features.Auth.Commands.RefreshToken;
 using Application.Features.Auth.Commands.Register;
+using Application.Features.Auth.Commands.RegisterRange;
 using Application.Features.Auth.Commands.UpdatePasswordPolicy;
+using Application.Features.Auth.Queries.GetPasswordPolicy;
 using Azure.Core;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -15,6 +17,12 @@ public class AuthController : BaseController
 {
     [HttpPost("register")]
     public async Task<IActionResult> Register(RegisterCommandRequest request)
+    {
+        var response = await Mediator.Send(request);
+        return Ok(response);
+    }
+    [HttpPost("registerRange")]
+    public async Task<IActionResult> RegisterRange(RegisterRangeCommandRequest request)
     {
         var response = await Mediator.Send(request);
         return Ok(response);
@@ -44,10 +52,16 @@ public class AuthController : BaseController
         var response = await Mediator.Send(new LogoutCommandRequest());
         return Ok(response);
     }
-    [HttpPut("passwordPolicy")]
-    public async Task<IActionResult> PasswordPolicy(UpdatePasswordPolicyCommandRequest request)
+    [HttpPut("updatePasswordPolicy")]
+    public async Task<IActionResult> UpdatePasswordPolicy(UpdatePasswordPolicyCommandRequest request)
     {
         var response = await Mediator.Send(request);
+        return Ok(response);
+    }
+    [HttpGet("getPasswordPolicy")]
+    public async Task<IActionResult> GetPasswordPolicy()
+    {
+        var response = await Mediator.Send(new GetPasswordPolicyQueryRequest());
         return Ok(response);
     }
 }

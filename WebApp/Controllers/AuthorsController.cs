@@ -34,10 +34,6 @@ public class AuthorsController : Controller
     {
         return View();
     }
-    public class AuthorModel
-    {
-        public string Name { get; set; }
-    }
     public async Task<IActionResult> GetList()
     { 
         return View();

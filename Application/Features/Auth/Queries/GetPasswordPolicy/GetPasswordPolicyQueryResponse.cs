@@ -1,6 +1,6 @@
-﻿namespace Application.Features.Auth.Commands.UpdatePasswordPolicy;
+﻿namespace Application.Features.Auth.Queries.GetPasswordPolicy;
 
-public class UpdatePasswordPolicyCommandResponse
+public class GetPasswordPolicyQueryResponse
 {
     public bool RequireDigit { get; set; }
     public bool RequireLowerCase { get; set; }

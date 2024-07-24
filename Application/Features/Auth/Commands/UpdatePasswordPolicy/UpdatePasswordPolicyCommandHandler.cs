@@ -25,6 +25,7 @@ public class UpdatePasswordPolicyCommandHandler : IRequestHandler<UpdatePassword
         PasswordPolicy? passwordPolicy = await _passwordPolicyRepository.GetAsync(p => p.Id == 1);
         passwordPolicy = _mapper.Map(request,passwordPolicy);
         PasswordPolicy updatedPasswordPolicy = await _passwordPolicyRepository.UpdateAsync(passwordPolicy);
-        return new UpdatePasswordPolicyCommandResponse();
+        var response = _mapper.Map<UpdatePasswordPolicyCommandResponse>(updatedPasswordPolicy);
+        return response;
     }
 }

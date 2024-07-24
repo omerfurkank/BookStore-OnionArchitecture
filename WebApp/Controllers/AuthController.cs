@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using WebApp.Models.Auth;
+using ClosedXML.Excel;
 
 namespace WebApp.Controllers;
 public class AuthController : Controller
@@ -57,7 +58,34 @@ public class AuthController : Controller
         await HttpContext.SignOutAsync(JwtBearerDefaults.AuthenticationScheme);
         return RedirectToAction("Index", "Home");
     }
-    public async Task<IActionResult> PasswordPolicy()
+    public async Task<IActionResult> UpdatePasswordPolicy()
+    {
+        return View();
+    }
+    public IActionResult ExcelDownload()
+    {
+        using (var workbook = new XLWorkbook())
+        {
+            var worksheet = workbook.Worksheets.Add("Users Register");
+
+            // Başlık satırı
+            worksheet.Cell(1, 1).Value = "FullName";
+            worksheet.Cell(1, 2).Value = "Email";
+            worksheet.Cell(1, 3).Value = "Password";
+            worksheet.Cell(1, 4).Value = "PasswordConfirm";
+
+
+            using (var stream = new MemoryStream())
+            {
+                workbook.SaveAs(stream);
+                stream.Position = 0;
+
+                // Kullanıcıya indirme olarak sunma
+                return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Users.xlsx");
+            }
+        }
+    }
+    public IActionResult ExcelUpload()
     {
         return View();
     }
