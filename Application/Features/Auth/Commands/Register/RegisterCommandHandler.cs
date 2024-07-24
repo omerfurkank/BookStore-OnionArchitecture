@@ -24,6 +24,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommandRequest, Re
     public async Task<RegisterCommandResponse> Handle(RegisterCommandRequest request, CancellationToken cancellationToken)
     {
         await _authBusinessRules.CheckUserExistsToRegister(request.Email);
+        //_authBusinessRules.CheckPasswordToRequiredParameters(request.Password);
         User user = _mapper.Map<User>(request);
         user.UserName = request.Email;
 

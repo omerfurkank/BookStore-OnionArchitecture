@@ -43,16 +43,9 @@ public class AuthController : Controller
     }
     public IActionResult Register()
     {
-        return View(new RegisterModel());
+        return View();
     }
-    [HttpPost]
-    public async Task<IActionResult> Register(RegisterModel registerModel)
-    {
-        var client = _clientFactory.CreateClient();
-        var content = new StringContent(JsonSerializer.Serialize(registerModel), Encoding.UTF8, "application/json");
-        var response = await client.PostAsync("http://localhost:5298/api/Auth/Register", content);
-        return RedirectToAction("Index", "Home");
-    }
+  
     public async Task<IActionResult> Logout()
     {
         var client = _clientFactory.CreateClient();
@@ -63,5 +56,9 @@ public class AuthController : Controller
 
         await HttpContext.SignOutAsync(JwtBearerDefaults.AuthenticationScheme);
         return RedirectToAction("Index", "Home");
+    }
+    public async Task<IActionResult> PasswordPolicy()
+    {
+        return View();
     }
 }

@@ -1,5 +1,7 @@
 ﻿using Application.Features.Auth.Commands.Register;
+using Application.Features.Auth.Commands.UpdatePasswordPolicy;
 using AutoMapper;
+using Domain.Entities;
 using Domain.Entities.Identity;
 using System;
 using System.Collections.Generic;
@@ -14,5 +16,7 @@ public class MappingProfiles : Profile
     {
         CreateMap<User,RegisterCommandRequest>().ReverseMap();
         CreateMap<User, RegisterCommandResponse>().ReverseMap();
+
+        CreateMap<PasswordPolicy, UpdatePasswordPolicyCommandRequest>().ReverseMap();
     }
 }

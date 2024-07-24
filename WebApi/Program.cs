@@ -16,6 +16,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddPersistenceServices(builder.Configuration);
 builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddApplicationServices();
+builder.AddPasswordPolicyServices();
 
 builder.Services.AddCors(options =>
 {

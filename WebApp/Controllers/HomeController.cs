@@ -20,7 +20,6 @@ public class HomeController : Controller
     {
         return View();
     }
-
     public string AdminPage()
     {
         return "admin page";

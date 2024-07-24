@@ -2,6 +2,7 @@
 using Application.Features.Auth.Commands.Logout;
 using Application.Features.Auth.Commands.RefreshToken;
 using Application.Features.Auth.Commands.Register;
+using Application.Features.Auth.Commands.UpdatePasswordPolicy;
 using Azure.Core;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -41,6 +42,12 @@ public class AuthController : BaseController
     public async Task<IActionResult> LogoutAll()
     {
         var response = await Mediator.Send(new LogoutCommandRequest());
+        return Ok(response);
+    }
+    [HttpPut("passwordPolicy")]
+    public async Task<IActionResult> PasswordPolicy(UpdatePasswordPolicyCommandRequest request)
+    {
+        var response = await Mediator.Send(request);
         return Ok(response);
     }
 }
