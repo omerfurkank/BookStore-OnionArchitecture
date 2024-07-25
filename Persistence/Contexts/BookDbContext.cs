@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -19,5 +20,10 @@ public class BookDbContext : IdentityDbContext<User,Role,int>
     public BookDbContext(DbContextOptions options, IConfiguration configuration) : base(options)
     { 
         Configuration = configuration;
+    }
+    protected override void OnModelCreating(ModelBuilder builder)
+    {
+        PasswordPolicy passwordPolicy =  new(1, DateTime.UtcNow, null, true, true, true, true, 5);
+        builder.Entity<PasswordPolicy>().HasData(passwordPolicy);
     }
 }

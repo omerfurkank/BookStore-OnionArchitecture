@@ -11,4 +11,15 @@ public class Entity
     public int Id { get; set; }
     public DateTime CreatedDate { get; set; }
     public DateTime? UpdatedDate { get; set; }
+    public Entity()
+    {
+        
+    }
+
+    public Entity(int id, DateTime createdDate, DateTime? updatedDate)
+    {
+        Id = id;
+        CreatedDate = createdDate;
+        UpdatedDate = updatedDate;
+    }
 }
