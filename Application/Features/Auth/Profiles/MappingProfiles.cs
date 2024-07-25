@@ -1,7 +1,5 @@
 ﻿using Application.Features.Auth.Commands.Register;
 using Application.Features.Auth.Commands.RegisterRange;
-using Application.Features.Auth.Commands.UpdatePasswordPolicy;
-using Application.Features.Auth.Queries.GetPasswordPolicy;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Entities.Identity;
@@ -20,8 +18,5 @@ public class MappingProfiles : Profile
         CreateMap<User, RegisterCommandResponse>().ReverseMap();
         CreateMap<User, RegisterRangeCommandRequest.RegisterRequestDto>().ReverseMap();
         CreateMap<User, RegisterRangeCommandResponse.RegisterResponseDto>().ReverseMap();
-
-        CreateMap<PasswordPolicy, GetPasswordPolicyQueryResponse>().ReverseMap();
-        CreateMap<PasswordPolicy, UpdatePasswordPolicyCommandRequest>().ReverseMap();
     }
 }

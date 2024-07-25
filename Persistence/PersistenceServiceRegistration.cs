@@ -26,8 +26,6 @@ public static class PersistenceServiceRegistration
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IRoleRepository, RoleRepository>();
 
-        services.AddScoped<IPasswordPolicyRepository, PasswordPolicyRepository>();
-        PasswordPolicyServiceRegistration.Configure(services.BuildServiceProvider().GetService<IPasswordPolicyRepository>());
         return services;
     }
     
