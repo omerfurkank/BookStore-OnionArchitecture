@@ -9,7 +9,7 @@ public class GetListAuthorQueryHandler : IRequestHandler<GetListAuthorQueryReque
 {
     private readonly IMapper _mapper;
     private readonly IAuthorRepository _authorRepository;
-
+    
     public GetListAuthorQueryHandler(IMapper mapper, IAuthorRepository authorRepository)
     {
         _mapper = mapper;
@@ -18,7 +18,7 @@ public class GetListAuthorQueryHandler : IRequestHandler<GetListAuthorQueryReque
 
     public async Task<IList<GetListAuthorQueryResponse>> Handle(GetListAuthorQueryRequest request, CancellationToken cancellationToken)
     {
-        IList<Author> authors = await _authorRepository.GetListAsync(index: request.Index, size: request.Size);
+        IList<Author>? authors = await _authorRepository.GetListAsync(index: request.Index, size: request.Size);
         IList<GetListAuthorQueryResponse> response = _mapper.Map<IList<GetListAuthorQueryResponse>>(authors);
         return response;
     }

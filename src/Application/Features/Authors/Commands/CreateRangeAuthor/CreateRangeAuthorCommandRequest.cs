@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Features.Authors.Commands.CreateRange;
+namespace Application.Features.Authors.Commands.CreateRangeAuthor;
 public class CreateRangeAuthorCommandRequest : IRequest<CreateRangeAuthorCommandResponse>
 {
     public List<AuthorDto> Authors { get; set; }

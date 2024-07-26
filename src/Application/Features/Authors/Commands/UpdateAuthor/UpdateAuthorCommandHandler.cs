@@ -33,7 +33,7 @@ public class UpdateAuthorCommandHandler : IRequestHandler<UpdateAuthorCommandReq
             }
         }
         Author updatedAuthor = await _authorRepository.UpdateAsync(author);
-        var response = _mapper.Map<UpdateAuthorCommandResponse>(updatedAuthor);
+        UpdateAuthorCommandResponse response = _mapper.Map<UpdateAuthorCommandResponse>(updatedAuthor);
         return response;
     }
 }

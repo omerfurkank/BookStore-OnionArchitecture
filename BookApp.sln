@@ -19,7 +19,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{9415BFD1-1
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{1EE28EC5-4C43-4E96-89B4-2F3FF4A491DB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApplicationUnitTest", "test\ApplicationUnitTest\ApplicationUnitTest.csproj", "{F8EB26B5-FC55-48CF-9139-068D3F3A3663}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApplicationUnitTest", "test\ApplicationUnitTest\ApplicationUnitTest.csproj", "{F8EB26B5-FC55-48CF-9139-068D3F3A3663}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

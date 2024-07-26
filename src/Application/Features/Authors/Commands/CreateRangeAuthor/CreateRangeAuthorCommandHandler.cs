@@ -3,7 +3,7 @@ using AutoMapper;
 using Domain.Entities;
 using MediatR;
 
-namespace Application.Features.Authors.Commands.CreateRange;
+namespace Application.Features.Authors.Commands.CreateRangeAuthor;
 
 public class CreateRangeAuthorCommandHandler : IRequestHandler<CreateRangeAuthorCommandRequest, CreateRangeAuthorCommandResponse>
 {
@@ -22,6 +22,5 @@ public class CreateRangeAuthorCommandHandler : IRequestHandler<CreateRangeAuthor
         var addedAuthors = _authorRepository.AddRangeAsync(authors);
         var response = new CreateRangeAuthorCommandResponse();
         return response;
-
     }
 }

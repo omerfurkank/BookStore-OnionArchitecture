@@ -12,7 +12,7 @@ namespace Application.Features.Authors.Commands.CreateAuthor
         private readonly IAuthorRepository _authorRepository;
         private readonly IMapper _mapper;
 
-        public CreateAuthorCommandHandler(IAuthorRepository authorRepository, IMapper mapper, BookBusinessRules businessRules)
+        public CreateAuthorCommandHandler(IAuthorRepository authorRepository, IMapper mapper)
         {
             _authorRepository = authorRepository;
             _mapper = mapper;

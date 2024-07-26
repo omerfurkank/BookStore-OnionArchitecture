@@ -1,5 +1,5 @@
 ﻿using Application.Features.Authors.Commands.CreateAuthor;
-using Application.Features.Authors.Commands.CreateRange;
+using Application.Features.Authors.Commands.CreateRangeAuthor;
 using Application.Features.Authors.Commands.DeleteAuthor;
 using Application.Features.Authors.Commands.UpdateAuthor;
 using Application.Features.Authors.Queries.GetByIdAuthor;
