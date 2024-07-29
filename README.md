@@ -16,6 +16,7 @@ BookApp backend side created that includes;
 - Caching with Redis
 - Mapping with AutoMapper
 - Validation with FluentValidation
+- Unit Testing
 
 
   and much more...
