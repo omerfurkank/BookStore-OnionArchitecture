@@ -3,6 +3,7 @@ using Application;
 using Infrastructure;
 using Application.Exceptions;
 using Microsoft.OpenApi.Models;
+using Infrastructure.SignalR;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,8 +24,9 @@ builder.Services.AddCors(options =>
         builder =>
         {
             builder.WithOrigins("http://localhost:5189") // Ýzin verilen origin
+                    .AllowAnyHeader()
                    .AllowAnyMethod()
-                   .AllowAnyHeader();
+                    .AllowCredentials();
         });
 });
 builder.Services.AddSwaggerGen(c =>
@@ -69,5 +71,7 @@ app.UseAuthorization();
 app.UseMiddleware<ExceptionMiddleware>();
 
 app.MapControllers();
+
+app.ConfigureMapHubs();
 
 app.Run();

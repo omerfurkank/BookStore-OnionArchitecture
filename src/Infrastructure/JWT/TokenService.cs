@@ -1,4 +1,5 @@
-﻿using Domain.Entities.Identity;
+﻿using Application.Services.JWT;
+using Domain.Entities.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;

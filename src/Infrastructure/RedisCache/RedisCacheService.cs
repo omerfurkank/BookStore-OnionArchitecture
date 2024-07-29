@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Application.Services.RedisCache;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using StackExchange.Redis;
 using System;

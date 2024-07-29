@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Infrastructure.Serilog;
+namespace Application.Services.Serilog;
 public abstract class LoggerServiceBase
 {
     protected ILogger Logger { get; set; }

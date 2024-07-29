@@ -15,10 +15,28 @@
         </div>
     </form>
 </div>
-
 @section Scripts {
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.0/signalr.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="~/js/site.js"></script> <!-- SignalR JavaScript kütüphanenizi dahil edin -->
     <script>
         $(function () {
+          
+                // Hub bağlantısını oluşturun
+            var connection = new signalR.HubConnectionBuilder()
+                .withUrl("http://localhost:5298/author-hub")  // API portunu ve Hub URL'sini belirtin
+                .build();
+
+            // Mesajları dinleyin
+           
+
+            // Bağlantıyı başlatın
+            connection.start().catch(function (err) {
+                console.error('Hub bağlantı hatası: ', err.toString());
+            });
+
+            
             $('#saveButton').click(function () {
                 var formData = new FormData();
                 formData.append('Name', $('#Name').val());
@@ -34,16 +52,25 @@
                     contentType: false,
                     data: formData,
                     success: function (response) {
-                        Swal.fire({
-                            title: 'Success!',
-                            text: 'Yazar başarıyla eklendi!',
-                            icon: 'success',
-                            confirmButtonText: 'OK'
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                window.location.href = '@Url.Action("GetList", "Authors")';
-                            }
+                        connection.on("ReceiveMessage", function (message) {
+                            Swal.fire({
+                                title: 'New Message!',
+                                text: `${message}`,
+                                icon: 'info',
+                                confirmButtonText: 'OK'
+                            });
                         });
+
+                        // Swal.fire({
+                        //     title: 'Success!',
+                        //     text: 'Yazar başarıyla eklendi!',
+                        //     icon: 'success',
+                        //     confirmButtonText: 'OK'
+                        // }).then((result) => {
+                        //     if (result.isConfirmed) {
+                        //         window.location.href = '@Url.Action("GetList", "Authors")';
+                        //     }
+                        // });
                     },
                     error: function (xhr, status, error) {
                         var errorMessage;

@@ -1,7 +1,7 @@
 ﻿using Application.Features.Auth.Rules.BusinessRules;
 using Application.Repositories;
+using Application.Services.JWT;
 using Domain.Entities.Identity;
-using Infrastructure.JWT;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Newtonsoft.Json.Linq;

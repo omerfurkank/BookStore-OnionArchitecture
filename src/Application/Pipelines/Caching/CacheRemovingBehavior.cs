@@ -1,4 +1,4 @@
-﻿using Infrastructure.RedisCache;
+﻿using Application.Services.RedisCache;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using System;

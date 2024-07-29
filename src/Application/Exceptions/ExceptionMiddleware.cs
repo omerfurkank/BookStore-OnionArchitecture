@@ -1,6 +1,6 @@
 ﻿using Application.Exceptions.CustomExceptions;
+using Application.Services.Serilog;
 using FluentValidation;
-using Infrastructure.Serilog;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SendGrid.Helpers.Errors.Model;

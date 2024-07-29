@@ -7,7 +7,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Infrastructure.JWT;
+namespace Application.Services.JWT;
 public interface ITokenService
 {
     Task<JwtSecurityToken> CreateToken(User user, IList<string> roles);

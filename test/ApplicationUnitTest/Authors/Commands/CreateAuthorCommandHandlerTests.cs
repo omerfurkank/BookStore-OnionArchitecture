@@ -9,7 +9,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Application.Repositories;
 using Microsoft.AspNetCore.Http;
-using Application.Features.Books.Rules.BusinessRules;
 
 namespace ApplicationUnitTest.Authors.Commands;
 public class CreateAuthorCommandHandlerTests

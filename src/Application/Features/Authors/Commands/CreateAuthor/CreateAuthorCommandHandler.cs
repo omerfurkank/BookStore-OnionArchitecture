@@ -1,6 +1,5 @@
-﻿using Application.Features.Books.Commands.CreateBook;
-using Application.Features.Books.Rules.BusinessRules;
-using Application.Repositories;
+﻿using Application.Repositories;
+using Application.Services.SignalR.HubServices;
 using AutoMapper;
 using Domain.Entities;
 using MediatR;
@@ -11,11 +10,13 @@ namespace Application.Features.Authors.Commands.CreateAuthor
     {
         private readonly IAuthorRepository _authorRepository;
         private readonly IMapper _mapper;
+        private readonly IAuthorHubService _hubService;
 
-        public CreateAuthorCommandHandler(IAuthorRepository authorRepository, IMapper mapper)
+        public CreateAuthorCommandHandler(IAuthorRepository authorRepository, IMapper mapper, IAuthorHubService authorHubService)
         {
             _authorRepository = authorRepository;
             _mapper = mapper;
+            _hubService = authorHubService;
         }
 
         public async Task<CreateAuthorCommandResponse> Handle(CreateAuthorCommandRequest request, CancellationToken cancellationToken)
@@ -31,6 +32,9 @@ namespace Application.Features.Authors.Commands.CreateAuthor
             }
             Author createdAuthor = await _authorRepository.AddAsync(mappedAuthor);
             var response = _mapper.Map<CreateAuthorCommandResponse>(createdAuthor);
+
+            await _hubService.SendMessage("added");
+
             return response;
 
         }

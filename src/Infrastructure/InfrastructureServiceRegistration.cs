@@ -10,6 +10,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Application.Services.JWT;
+using Application.Services.RedisCache;
+using Application.Services.Serilog;
+using Application.Services.SignalR.HubServices;
+using Infrastructure.SignalR.HubServices;
 
 namespace Infrastructure;
 public static class InfrastructureServiceRegistration
@@ -26,6 +31,9 @@ public static class InfrastructureServiceRegistration
 
         services.Configure<PostgreLogSettings>(configuration.GetSection("SeriLogConfigurations:PostgreSqlConfiguration"));
         services.AddSingleton<LoggerServiceBase, PostgreSqlLogger>();
+
+        services.AddSignalR();
+        services.AddTransient<IAuthorHubService,AuthorHubService>();      
 
         services.AddAuthentication(opt =>
         {

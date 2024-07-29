@@ -1,4 +1,4 @@
-﻿using Infrastructure.JWT;
+﻿using Application.Services.Serilog;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;

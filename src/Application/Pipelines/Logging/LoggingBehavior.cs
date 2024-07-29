@@ -1,4 +1,4 @@
-﻿using Infrastructure.Serilog;
+﻿using Application.Services.Serilog;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Serilog.Context;

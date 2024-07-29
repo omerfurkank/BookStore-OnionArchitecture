@@ -135,7 +135,7 @@
                                     }
                                 });
                         },
-                        error: function (xhr) {
+                         
                             var errorMessage = 'An error occurred while processing your request.';
                             if (xhr.responseJSON && xhr.responseJSON.Errors) {
                                 errorMessage = xhr.responseJSON.Errors.join(' ');

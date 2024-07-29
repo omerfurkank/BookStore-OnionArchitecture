@@ -70,10 +70,6 @@ public class UpdateAuthorCommandHandlerTests
         _mockMapper.Verify(m => m.Map(request, existingAuthor), Times.Once);
         _mockAuthorRepository.Verify(r => r.UpdateAsync(updatedAuthor), Times.Once);
     }
-    
-
-
-
 
     private IFormFile GetTestFormFile()
     {

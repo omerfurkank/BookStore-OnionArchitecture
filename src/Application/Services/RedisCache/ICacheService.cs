@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Infrastructure.RedisCache;
+namespace Application.Services.RedisCache;
 public interface ICacheService
 {
     Task<T> GetAsync<T>(string key);

@@ -1,8 +1,8 @@
 ﻿using Application.Features.Auth.Rules.BusinessRules;
 using Application.Repositories;
+using Application.Services.JWT;
 using AutoMapper;
 using Domain.Entities.Identity;
-using Infrastructure.JWT;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using System.IdentityModel.Tokens.Jwt;
