@@ -21,8 +21,8 @@ where TEntity : Entity
     }
     public IQueryable<TEntity> Query() => Context.Set<TEntity>();
 
-    public async Task<TEntity?> GetAsync(Expression<Func<TEntity, bool>> predicate, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>?
-                                                           include = null, bool tracking = true)
+    public async Task<TEntity?> GetAsync(Expression<Func<TEntity, bool>> predicate, Func<IQueryable<TEntity>,
+        IIncludableQueryable<TEntity, object>>? include = null, bool tracking = true)
     {
         var queryable = Query();
 
@@ -32,8 +32,8 @@ where TEntity : Entity
         return await queryable.FirstOrDefaultAsync(predicate);
     }
 
-    public async Task<IList<TEntity>> GetListAsync(Expression<Func<TEntity, bool>>? predicate = null, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>?
-                                                           include = null, bool tracking = true, int index = 0, int size = 10)
+    public async Task<IList<TEntity>> GetListAsync(Expression<Func<TEntity, bool>>? predicate = null, Func<IQueryable<TEntity>,
+        IIncludableQueryable<TEntity, object>>? include = null, bool tracking = true, int index = 0, int size = 10)
     {
         var queryable = Query();
 
@@ -75,7 +75,6 @@ where TEntity : Entity
         await Context.SaveChangesAsync();
         return entities;
     }
-
     public async Task<TEntity> DeleteAsync(TEntity entity)
     {
         Context.Remove(entity);

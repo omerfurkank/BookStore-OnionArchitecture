@@ -13,17 +13,14 @@ public class RefreshTokenMiddleware
     private readonly RequestDelegate _next;
     private readonly IConfiguration _configuration;
     private readonly IHttpClientFactory _clientFactory;
-
     public RefreshTokenMiddleware(RequestDelegate next, IConfiguration configuration, IHttpClientFactory clientFactory)
     {
         _next = next;
         _configuration = configuration;
         _clientFactory = clientFactory;
     }
-
     public async Task InvokeAsync(HttpContext context)
     {
-
         var accessToken = context.User?.Claims?.FirstOrDefault(x => x.Type == "accessToken")?.Value;
         var refreshTokenExpire = context.User?.Claims?.FirstOrDefault(x => x.Type == "refreshTokenExpire")?.Value;
 
@@ -41,10 +38,7 @@ public class RefreshTokenMiddleware
 
             if (accessTokenValid.ValidTo < DateTime.UtcNow)
             {
-                var refreshLoginModel = new RefreshLoginModel
-                {
-                    AccessToken = accessToken
-                };
+                var refreshLoginModel = new RefreshLoginModel {AccessToken = accessToken };
 
                 var client = _clientFactory.CreateClient();
                 var content = new StringContent(JsonSerializer.Serialize(refreshLoginModel), Encoding.UTF8, "application/json");
@@ -70,7 +64,6 @@ public class RefreshTokenMiddleware
         }
         else
         {
-
             if (!context.Request.Path.Value.StartsWith("/Auth/"))
             {
                 context.Response.Redirect("/Auth/Login");

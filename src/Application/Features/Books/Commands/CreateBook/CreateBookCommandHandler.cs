@@ -18,7 +18,6 @@ public class CreateBookCommandHandler : IRequestHandler<CreateBookCommandRequest
         _mapper = mapper;
         _businessRules = businessRules;
     }
-
     public async Task<CreateBookCommandResponse> Handle(CreateBookCommandRequest request, CancellationToken cancellationToken)
     {
         await _businessRules.CheckBookExists(request.Name);
@@ -35,6 +34,5 @@ public class CreateBookCommandHandler : IRequestHandler<CreateBookCommandRequest
         Book createdBook = await _bookRepository.AddAsync(mappedBook);
         var response = _mapper.Map<CreateBookCommandResponse>(createdBook);
         return response;
-
     }
 }

@@ -27,6 +27,5 @@ public static class PersistenceServiceRegistration
         services.AddScoped<IRoleRepository, RoleRepository>();
 
         return services;
-    }
-    
+    }  
 }
