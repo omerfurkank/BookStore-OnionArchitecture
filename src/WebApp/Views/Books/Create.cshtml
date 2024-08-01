@@ -1,6 +1,4 @@
-﻿
-
-@{ Layout = "_ModalLayout"; }
+﻿@{ Layout = "_ModalLayout"; }
 
 <div class="container">
     <form id="createBookForm" class="w-100 m-10 p-3 shadow mx-auto" method="post">
@@ -9,8 +7,10 @@
             <input type="text" class="form-control" name="Name" id="Name" />
         </div>
         <div class="mb-3">
-            <label for="AuthorId" class="form-label">AuthorId:</label>
-            <input type="text" class="form-control" name="AuthorId" id="AuthorId" />
+            <label for="AuthorId" class="form-label">Author:</label>
+            <select class="form-control" name="AuthorId" id="AuthorId">
+                <option value="">Select an author</option>
+            </select>
         </div>
         <div class="mb-3">
             <label for="ImageUrl" class="form-label">Image:</label>
@@ -24,13 +24,39 @@
 
 @section Scripts {
     <script>
-        $(function () {
+        $(document).ready(function () {
+            // Yazarları yüklemek için AJAX isteği
+            $.ajax({
+                url: baseUrl + 'api/Authors/GetList', // Yazarları listeleyen API endpoint
+                type: 'GET',
+                headers: {
+                    'Authorization': 'Bearer @ViewData["Token"]'
+                },
+                success: function (response) {
+                    var authorSelect = $('#AuthorId');
+                    $.each(response, function (index, author) {
+                        authorSelect.append($('<option>', {
+                            value: author.id,
+                            text: author.name
+                        }));
+                    });
+                },
+                error: function () {
+                    Swal.fire({
+                        title: 'Error!',
+                        text: 'Yazarlar yüklenirken bir hata oluştu.',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                }
+            });
+
             $('#saveButton').click(function () {
                 var formData = new FormData();
                 formData.append('Name', $('#Name').val());
                 formData.append('AuthorId', $('#AuthorId').val());
                 formData.append('ImageUrl', $('#ImageUrl')[0].files[0]);
-              
+
                 $.ajax({
                     url: baseUrl + 'api/Books/Add',
                     type: 'POST',
@@ -43,7 +69,7 @@
                     success: function (response) {
                         Swal.fire({
                             title: 'Success!',
-                            text: 'Kitap başarıyla eklendi la!',
+                            text: 'Kitap başarıyla eklendi!',
                             icon: 'success',
                             confirmButtonText: 'OK'
                         }).then((result) => {
@@ -57,7 +83,7 @@
                         if (xhr.status === 401) {
                             errorMessage = 'Yetkilendirme hatası! Lütfen giriş yapın.';
                         } else {
-                            errorMessage = xhr.responseJSON ? xhr.responseJSON.message : 'Yazar eklenirken bir hata oluştu.';
+                            errorMessage = xhr.responseJSON ? xhr.responseJSON.message : 'Kitap eklenirken bir hata oluştu.';
                         }
 
                         Swal.fire({
