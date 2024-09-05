@@ -1,8 +1,6 @@
-development continues...
+An onion architecture project completed with advanced technologies.
 
-A monolitic architecture project completed with advanced technologies.
-
-BookApp includes a Web API and an MVC application consumed by Web API.
+BookApp includes a Web API and an MVC application consumed by API.
 
 BookApp backend side created that includes;
 - Clean Architecture
